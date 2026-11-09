@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACADI — Free parent classroom, printables & resources</title>
+<meta name="description" content="ACADI is a free educational and support platform for parents and caregivers of children with special needs, ages 2–15, starting in Lebanon.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--plum:#5E2A63;--plum-deep:#3A1A40;--ink:#2B1B33;--muted:#6E5B78;--line:rgba(94,42,99,.12);
+--lavender:#E6DDF7;--mint:#D6F2E4;--blush:#FBE0EA;--sky:#DCEBFA;--cream:#FFF8F1;--sun:#FFF1D6;--star:#F4B942;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html[dir=rtl] body{font-family:'IBM Plex Sans Arabic',Inter,sans-serif}
+img,video{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;color:inherit;background:none;border:0}
+input,textarea,select{font:inherit;color:var(--ink);background:#fff}
+.anton{font-family:Anton,Impact,sans-serif;font-weight:400;letter-spacing:.01em;text-transform:uppercase}
+html[dir=rtl] .anton{font-family:'IBM Plex Sans Arabic',Anton,sans-serif;font-weight:700;letter-spacing:0}
+.wrap{width:min(1240px,94vw);margin-inline:auto}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.hidden{display:none!important}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,248,241,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:14px}
+.nav .logo{flex:0 0 auto;display:block}.nav .logo img{height:40px;width:auto;max-width:none}
+@media(max-width:600px){.nav .logo img{height:32px}.nav .wrap{gap:8px}}
+.nav ul{display:flex;gap:18px;list-style:none;font-weight:600;font-size:14px}
+.nav ul a{opacity:.8;transition:opacity .3s;white-space:nowrap;padding:6px 0;border-bottom:2px solid transparent}
+.nav ul a:hover,.nav ul a.on{opacity:1;border-color:var(--plum)}
+.nav ul a .soon{font-size:9px;background:var(--star);color:var(--plum-deep);border-radius:99px;padding:2px 6px;margin-inline-start:4px;vertical-align:middle;font-weight:800}
+.right{display:flex;align-items:center;gap:10px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#fff}
+.lang button{border:0;background:transparent;border-radius:999px;padding:6px 10px;font-weight:700;font-size:13px;color:var(--plum)}
+.lang button.on{background:var(--plum);color:#fff}
+.gear{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--plum)}.gear svg{width:18px;height:18px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#fff;place-items:center;color:var(--plum)}
+.burger svg{width:20px;height:20px}
+.drawer{display:none;position:fixed;inset:72px 0 0 0;background:var(--cream);z-index:39;padding:20px 5vw;overflow:auto}
+.drawer.open{display:block}
+.drawer a{display:block;padding:16px 0;border-bottom:1px solid var(--line);font-weight:700;font-size:18px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--plum);color:#fff;border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(94,42,99,.25)}
+.btn.light{background:#fff;color:var(--plum);border:2px solid var(--line)}
+.btn.sun{background:var(--star);color:var(--plum-deep)}
+.btn.sm{padding:9px 14px;font-size:13px}
+.btn.danger{background:#B3261E}
+.free{display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:#1F5C3F;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.free::before{content:"";width:8px;height:8px;border-radius:50%;background:#2E9E6B}
+.chip{display:inline-block;background:rgba(255,255,255,.75);border-radius:999px;padding:5px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--plum)}
+@media(max-width:1080px){.nav ul{display:none}.nav .btn{display:none}.burger{display:grid}}
+
+/* hero */
+.hero{position:relative;background:var(--lavender);transition:background 1.1s var(--ease);overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:140px;background:linear-gradient(180deg,transparent,var(--cream));pointer-events:none}
+.hero .stage{position:relative;height:calc(100svh - 72px);min-height:640px;max-height:920px}
+.word{position:absolute;left:0;right:0;top:10%;text-align:center;line-height:.9;white-space:nowrap;pointer-events:none;user-select:none;color:var(--wc,#A98BD8);opacity:.72;z-index:0}
+.cast,.copy,.arrows,.tabs,.floor{z-index:1}
+.word span{display:inline-block}
+.cast{position:absolute;inset:0}
+.kid{position:absolute;bottom:0;left:50%;transform:translateX(-50%);will-change:transform,filter,opacity;pointer-events:none}
+.kid img{height:min(76vh,740px);width:auto;max-width:none;filter:drop-shadow(0 30px 40px rgba(58,26,64,.25))}
+.kid.side img{height:min(50vh,480px)}
+.kid.side{opacity:.55;filter:blur(1.5px) saturate(.9)}
+.kid.l{left:22%}.kid.r{left:78%}
+.floor{position:absolute;left:50%;bottom:-6%;width:70vw;max-width:900px;height:22vw;max-height:260px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(94,42,99,.14),transparent 70%)}
+.copy{position:absolute;inset-inline-start:0;bottom:9%;max-width:430px;z-index:3}
+.copy .n{margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
+.copy h1{font-size:clamp(34px,4.2vw,58px);line-height:1.04;letter-spacing:-.02em;margin:8px 0 12px;font-weight:800}
+.copy p{font-size:17px;color:var(--muted);font-weight:500;max-width:38ch}
+.copy .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.arrows{position:absolute;inset-inline-start:0;bottom:calc(9% - 70px);z-index:3;display:flex;gap:10px}
+.arrow{width:54px;height:54px;border-radius:50%;border:2px solid var(--plum);background:rgba(255,255,255,.4);color:var(--plum);display:grid;place-items:center;color:var(--plum);transition:all .35s var(--ease)}
+.arrow:hover{background:var(--plum);color:#fff;transform:scale(1.06)}
+.arrow svg{width:20px;height:20px}
+html[dir=rtl] .arrow svg{transform:scaleX(-1)}
+.tabs{position:absolute;left:50%;bottom:0;transform:translateX(-50%);z-index:4;display:flex;gap:6px;background:rgba(255,255,255,.7);backdrop-filter:blur(10px);border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;padding:8px}
+.tab{border:0;background:transparent;color:var(--muted);border-radius:16px;padding:12px 18px;font-weight:700;font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:center;transition:all .35s var(--ease)}
+.tab b{font-weight:800;color:var(--plum);opacity:.6}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 8px 20px rgba(94,42,99,.1)}
+@media(max-width:900px){
+.hero .stage{min-height:0;height:auto;max-height:none;padding:0 0 24px}
+.word{top:5vh}
+.cast{position:relative;height:58vh;min-height:400px;margin-top:3vh}
+.kid img{height:min(48vh,420px)}.kid.side{display:none}
+.copy{position:relative;bottom:auto;max-width:none;margin-top:14px}.copy h1{font-size:clamp(30px,8vw,42px)}
+.arrows{position:relative;bottom:auto;margin-top:18px}
+.tabs{position:relative;left:auto;transform:none;margin:24px auto 0;border-radius:22px;border-bottom:1px solid var(--line);width:max-content;max-width:100%;overflow-x:auto}
+.tab{padding:10px 12px;font-size:13px}.tab b{display:none}}
+
+/* page banner (inner pages) */
+.banner{background:var(--bc,var(--lavender));border-radius:0 0 40px 40px;padding:clamp(40px,6vw,80px) 0 clamp(36px,5vw,60px);position:relative;overflow:hidden}
+.banner .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:end;position:relative;z-index:2}
+.banner .bw{position:absolute;inset-inline-end:2%;top:-8%;font-size:clamp(80px,11vw,190px);line-height:1;color:var(--wc,#A98BD8);opacity:.6;pointer-events:none;white-space:nowrap}
+.banner h1{font-size:clamp(34px,5vw,64px);line-height:1;letter-spacing:-.02em;font-weight:800;margin:12px 0 12px}
+.banner .crumb{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}
+.banner .crumb a{opacity:.7}
+.banner .bart{position:relative;height:300px}
+.banner .bart img{position:absolute;bottom:-60px;inset-inline-end:0;height:360px;filter:drop-shadow(0 24px 30px rgba(58,26,64,.25))}
+@media(max-width:900px){.banner .wrap{grid-template-columns:1fr}.banner .bart{height:200px}.banner .bart img{height:250px;bottom:-50px}}
+
+/* ticker */
+.ticker{direction:ltr;overflow:hidden;border-block:1px solid var(--line);padding:16px 0;background:#fff}
+.ticker .row{display:flex;gap:40px;white-space:nowrap;width:max-content}
+.ticker .row span{font-size:26px;color:var(--plum);display:inline-flex;align-items:center;gap:40px}
+.ticker .row span::after{content:"✦";color:var(--star);font-size:20px}
+
+/* sections */
+section{padding:clamp(64px,8vw,110px) 0}
+.kick{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--plum);display:flex;align-items:center;gap:10px}
+.kick::before{content:"";width:28px;height:2px;background:var(--plum);border-radius:2px}
+h2{font-size:clamp(32px,4.6vw,58px);line-height:1;letter-spacing:-.02em;font-weight:800;margin:14px 0 16px;max-width:18ch}
+h2 .anton{display:block;color:var(--plum);font-size:1.18em;letter-spacing:.02em;font-weight:400}
+html[dir=rtl] h2 .anton{font-weight:700;font-size:1em}
+.sub{font-size:clamp(16px,1.3vw,19px);color:var(--muted);font-weight:500;max-width:58ch}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:22px;padding:28px;color:var(--muted);font-weight:600;text-align:center}
+
+/* welcome */
+.welcome .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.welcome h2{max-width:none}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pill{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;gap:14px;align-items:flex-start}
+.pill .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;flex:0 0 64px;font-size:20px;padding:6px}.pill .ic img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(58,26,64,.18))}
+.pill b{display:block;font-size:15px}.pill span{font-size:13px;color:var(--muted);font-weight:500}
+@media(max-width:900px){.welcome .wrap{grid-template-columns:1fr}}
+
+/* lesson cards */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.lesson{border-radius:28px;background:var(--c,var(--lavender));padding:24px;min-height:440px;position:relative;overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s var(--ease);color:var(--ink)}
+.lesson:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(94,42,99,.14)}
+.lesson .meta{display:flex;gap:8px;flex-wrap:wrap}
+.lesson h3{font-size:24px;line-height:1.1;letter-spacing:-.01em;font-weight:800;margin-top:14px;max-width:14ch;position:relative;z-index:2}
+.lesson p{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px;max-width:26ch;position:relative;z-index:2}
+.lesson .steps{margin-top:auto;position:relative;z-index:2;display:flex;gap:6px;font-size:12px;font-weight:700;color:var(--plum);flex-wrap:wrap}
+.lesson .steps i{font-style:normal;background:rgba(255,255,255,.8);border-radius:8px;padding:4px 8px}
+.lesson img.kid-img{position:absolute;inset-inline-end:-4%;bottom:0;height:62%;width:auto;filter:drop-shadow(0 20px 26px rgba(58,26,64,.22));transition:transform .6s var(--ease)}
+.lesson img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.lesson img.cover + .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.9) 40%,rgba(255,255,255,.4))}
+.lesson:hover img.kid-img{transform:translateY(-6px) scale(1.03)}
+.lesson .play{position:absolute;inset-inline-end:22px;top:22px;width:44px;height:44px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;z-index:3}
+.lesson .play svg{width:16px;height:16px;margin-inline-start:2px}
+.topics{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.topics span,.topics button{background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:700;font-size:14px;color:var(--ink)}
+.topics button.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+@media(max-width:900px){.grid3{grid-template-columns:1fr}.lesson{min-height:400px}}
+
+/* printables */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.print{border-radius:24px;padding:22px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 36px rgba(94,42,99,.08);display:flex;gap:18px;align-items:center;transition:transform .4s var(--ease),border-color .3s;color:var(--ink)}
+.print:hover{transform:translateY(-4px);border-color:var(--plum)}
+.print .ic{width:86px;height:110px;border-radius:14px;background:var(--c,var(--lavender));flex:0 0 86px;position:relative;overflow:hidden}
+.print .ic img{width:100%;height:100%;object-fit:cover}
+.print .ic::before{content:"";position:absolute;left:12px;right:12px;top:14px;height:9px;border-radius:99px;background:rgba(255,255,255,.85)}
+.print .ic.has::before{display:none}
+.print h3{font-size:17px;font-weight:800}.print p{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px}
+.print .dl{margin-top:10px;font-size:13px;font-weight:800;color:var(--plum);display:inline-flex;gap:6px;align-items:center}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.pgrid{grid-template-columns:1fr}}
+
+/* helps */
+.helps{background:var(--plum-deep);color:#fff;border-radius:40px;padding:clamp(40px,6vw,80px) clamp(22px,5vw,64px)}
+.helps .kick{color:#D9C7F0}.helps .kick::before{background:#D9C7F0}
+.helps h2{color:#fff}.helps h2 .anton{color:var(--star)}.helps .sub{color:rgba(255,255,255,.75)}
+.hgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.help{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:26px;padding:22px;min-height:300px;position:relative;overflow:hidden;transition:background .4s,transform .5s var(--ease);color:#fff}
+.help:hover{background:rgba(255,255,255,.12);transform:translateY(-6px)}
+.help .num{font-size:52px;color:rgba(255,255,255,.14);line-height:1}
+.help h3{font-size:20px;font-weight:800;margin-top:6px;max-width:12ch;position:relative;z-index:2}
+.help p{font-size:13.5px;color:rgba(255,255,255,.7);font-weight:500;margin-top:8px;max-width:22ch;position:relative;z-index:2}
+.help img{position:absolute;inset-inline-end:-6%;bottom:-4%;height:70%;width:auto;filter:drop-shadow(0 20px 24px rgba(0,0,0,.35))}
+@media(max-width:900px){.hgrid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.hgrid{grid-template-columns:1fr}}
+
+/* articles */
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.art{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;display:flex;flex-direction:column;min-height:240px;transition:transform .4s var(--ease),border-color .3s;color:var(--ink);overflow:hidden}
+.art:hover{transform:translateY(-4px);border-color:var(--plum)}
+.art .thumb{margin:-24px -24px 16px;height:150px;object-fit:cover;width:calc(100% + 48px);max-width:none}
+.art .cat{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--plum)}
+.art h3{font-size:20px;font-weight:800;margin-top:10px;line-height:1.2}.art p{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
+.art .src{margin-top:auto;padding-top:16px;font-size:12px;font-weight:700;color:var(--muted);display:flex;gap:8px;align-items:center}
+.art .src::before{content:"↗";color:var(--plum)}
+.disc{margin-top:24px;background:var(--sun);border-radius:18px;padding:16px 20px;font-size:14px;font-weight:600;color:#6B4A00;max-width:900px}
+@media(max-width:900px){.agrid{grid-template-columns:1fr}}
+
+/* detail page */
+.detail{display:grid;grid-template-columns:1.4fr .6fr;gap:40px;align-items:start;margin-top:36px}
+.body{font-size:17px;line-height:1.75;color:#3d2d46}
+.body p{margin:0 0 18px}.body h3{font-size:24px;font-weight:800;margin:28px 0 10px}.body h4{font-size:18px;margin:22px 0 8px}
+.body ul,.body ol{margin:0 0 18px 22px}html[dir=rtl] .body ul,html[dir=rtl] .body ol{margin:0 22px 18px 0}
+.body li{margin-bottom:6px}
+.media{border-radius:24px;overflow:hidden;background:#000;margin-bottom:24px}
+.media video{width:100%;max-height:560px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:18px 0 26px}
+.gallery img{border-radius:16px;aspect-ratio:1;object-fit:cover;width:100%}
+.aside{display:grid;gap:14px;position:sticky;top:90px}
+.box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px}
+.box h4{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);margin-bottom:12px}
+.box .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:600;padding:8px 0;border-top:1px solid var(--line)}
+.box .row:first-of-type{border-top:0}
+.box a.file{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-weight:700;font-size:14px;color:var(--plum)}
+.stepper{counter-reset:s;display:grid;gap:12px;margin:10px 0 24px}
+.stepper div{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.stepper div::before{counter-increment:s;content:counter(s);font-family:Anton;font-size:22px;color:var(--plum);min-width:30px}
+@media(max-width:900px){.detail{grid-template-columns:1fr}.aside{position:static}}
+
+/* mission / support / forms */
+.mission .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.mission img{filter:drop-shadow(0 30px 40px rgba(58,26,64,.2))}
+form.f{display:grid;gap:10px;max-width:520px;margin-top:20px}
+.f input,.f textarea,.f select{font-weight:600;padding:13px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;width:100%}
+.f textarea{min-height:90px;resize:vertical}
+.f label{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ok{display:none;margin-top:12px;font-weight:700;color:#1F5C3F}
+.support .box2{background:var(--lavender);border-radius:36px;padding:clamp(36px,5vw,64px);display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;position:relative;overflow:hidden}
+.support .box2 > div{position:relative;z-index:1}
+.support .box2 .big{position:absolute;z-index:0;inset-inline-end:-2%;top:-10%;font-size:clamp(120px,20vw,280px);line-height:1;color:#fff;opacity:.5;pointer-events:none}
+.support h2{max-width:none;font-size:clamp(28px,3.6vw,46px)}
+.ways{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;position:relative;z-index:2}
+.kidf{position:relative;height:340px;align-self:end}.kidf img{position:absolute;bottom:calc(-1 * clamp(36px,5vw,64px));left:50%;transform:translateX(-50%);height:400px;filter:drop-shadow(0 30px 40px rgba(58,26,64,.25))}
+.quiet{margin-top:14px;font-size:13px;font-weight:600;color:var(--muted);position:relative;z-index:2}
+@media(max-width:900px){.mission .wrap{grid-template-columns:1fr}.support .box2{grid-template-columns:1fr}.kidf{height:280px}.kidf img{height:330px}}
+
+/* coming soon */
+.soonbox{background:#fff;border:1px solid var(--line);border-radius:32px;padding:clamp(32px,5vw,60px);display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.soonbox .tag{display:inline-block;background:var(--star);color:var(--plum-deep);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800}
+.soonbox ul{margin:16px 0 0 20px;color:var(--muted);font-weight:600}html[dir=rtl] .soonbox ul{margin:16px 20px 0 0}
+.pros{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.pro{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;gap:14px;align-items:center}
+.pro .av{width:56px;height:56px;border-radius:18px;background:var(--lavender);display:grid;place-items:center;font-weight:800;color:var(--plum);overflow:hidden;flex:0 0 56px}
+.pro .av img{width:100%;height:100%;object-fit:cover}
+.pro b{display:block}.pro span{font-size:13px;color:var(--muted);font-weight:600}
+@media(max-width:900px){.soonbox{grid-template-columns:1fr}.pros{grid-template-columns:1fr}}
+
+footer{padding:36px 0 60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-weight:600;font-size:14px;align-items:center}
+footer img{height:30px}footer ul{display:flex;gap:16px;list-style:none;flex-wrap:wrap}
+footer .adminlink{opacity:.5;font-size:12px}
+
+/* ===== ADMIN ===== */
+.admin{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 72px)}
+.ad-side{background:var(--plum-deep);color:#fff;padding:24px 16px}
+.ad-side h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.6;margin:18px 10px 8px}
+.ad-side button{display:flex;width:100%;text-align:start;gap:10px;align-items:center;background:transparent;border:0;color:#fff;padding:11px 12px;border-radius:12px;font-weight:600;opacity:.8}
+.ad-side button.on,.ad-side button:hover{background:rgba(255,255,255,.12);opacity:1}
+.ad-side button .cnt{margin-inline-start:auto;background:rgba(255,255,255,.15);border-radius:99px;padding:2px 8px;font-size:12px}
+.amain{padding:28px clamp(16px,3vw,40px);background:#FBF7F2}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.toolbar h2{margin:0;font-size:28px}
+.table{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.trow{display:grid;grid-template-columns:56px 1fr 140px 110px 150px;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line);font-size:14px}
+.trow:first-child{border-top:0;background:var(--cream);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.trow .th{width:48px;height:48px;border-radius:12px;background:var(--lavender);object-fit:cover}
+.trow .st{font-size:11px;font-weight:800;border-radius:99px;padding:4px 10px;display:inline-block}
+.st.pub{background:var(--mint);color:#1F5C3F}.st.draft{background:var(--sun);color:#6B4A00}
+.trow .ops{display:flex;gap:6px;justify-content:flex-end}
+.ibtn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:7px 10px;font-size:12px;font-weight:700}
+.ibtn.red{color:#B3261E}
+@media(max-width:900px){.admin{grid-template-columns:1fr}.ad-side{display:flex;flex-wrap:wrap;gap:4px;padding:10px}.ad-side h4{display:none}.ad-side button{width:auto;padding:8px 10px;font-size:13px}.trow{grid-template-columns:48px 1fr 90px;}.trow .hide-m{display:none}}
+/* editor */
+.editor{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;display:grid;grid-template-columns:1fr 320px;gap:24px}
+.editor .col{display:grid;gap:14px;align-content:start}
+.fld label{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fld input,.fld textarea,.fld select{width:100%;padding:11px 14px;border-radius:14px;border:1px solid var(--line);font-weight:500;background:#fff}
+.fld textarea{min-height:120px;resize:vertical}
+.fld textarea.long{min-height:260px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.langtabs{display:flex;gap:6px;margin-bottom:10px}
+.langtabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font-weight:700;font-size:12px;color:var(--plum)}
+.langtabs button.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+.lp{display:none}.lp.on{display:grid;gap:14px}
+.up{border:2px dashed var(--line);border-radius:16px;padding:14px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--cream)}
+.up input{display:none}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.thumbs .ad-t{position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;background:var(--lavender);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--plum);text-align:center;padding:4px}
+.thumbs .ad-t img,.thumbs .ad-t video{width:100%;height:100%;object-fit:cover}
+.thumbs .ad-t button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:#B3261E;color:#fff;font-size:12px;line-height:1}
+.links{display:grid;gap:6px}
+.links .lk{display:grid;grid-template-columns:1fr 1fr 32px;gap:6px}
+.links .lk input{padding:8px 10px;border-radius:10px;border:1px solid var(--line);font-size:13px}
+.kids{display:flex;flex-wrap:wrap;gap:6px}
+.kids img{width:46px;height:46px;object-fit:contain;border-radius:10px;background:var(--lavender);border:2px solid transparent;cursor:pointer}
+.kids img.on{border-color:var(--plum)}
+.notice{background:var(--sun);border-radius:14px;padding:12px 14px;font-size:13px;font-weight:600;color:#6B4A00}
+.notice.ok{background:var(--mint);color:#1F5C3F}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--plum-deep);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;z-index:99;display:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat b{font-size:28px;display:block}.stat span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+@media(max-width:900px){.editor{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+
+
+/* shop */
+.pgrid2{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;color:var(--ink);display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pcard:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(94,42,99,.14)}
+.pimg{position:relative;aspect-ratio:1;background:var(--sun)}.pimg img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:14px;inset-inline-start:14px;background:var(--plum);color:#fff;border-radius:999px;padding:6px 12px;font-weight:800;font-size:12px}
+.pbody{padding:18px 20px 22px}.pbody .cat{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--plum)}.pbody h3{font-size:20px;font-weight:800;margin-top:6px}.pbody p{font-size:14px;color:var(--muted);font-weight:500;margin-top:4px}
+.prow{margin-top:12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.prow .price{font-size:22px;font-weight:800}.prow.big .price{font-size:34px}.prow .was{color:var(--muted);font-weight:600}.prow .off{background:var(--mint);color:#1F5C3F;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800}
+.pmain{border-radius:26px;overflow:hidden;background:var(--sun);aspect-ratio:1;margin-bottom:12px}.pmain img{width:100%;height:100%;object-fit:cover}
+#pthumbs img{cursor:pointer;border:2px solid transparent}#pthumbs img:hover{border-color:var(--plum)}
+@media(max-width:900px){.pgrid2{grid-template-columns:1fr 1fr}}@media(max-width:600px){.pgrid2{grid-template-columns:1fr}}
+/* rich text editor */
+.rte{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden}
+.rte .bar{display:flex;flex-wrap:wrap;gap:4px;padding:6px;border-bottom:1px solid var(--line);background:var(--cream)}
+.rte .bar button,.rte .bar select{width:auto;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:5px 8px;font-size:12px;font-weight:700;color:var(--ink);min-width:30px}
+.rte .bar button:hover{border-color:var(--plum)}
+.rte .bar input[type=color]{width:30px;height:28px;border:1px solid var(--line);border-radius:8px;padding:0;background:#fff}
+.rte .ed{min-height:220px;padding:14px 16px;outline:0;font-size:15px;line-height:1.7}
+.rte .ed:focus{box-shadow:inset 0 0 0 2px var(--lavender)}
+.rte .ed img,.rte .ed video{max-width:100%;border-radius:12px;margin:8px 0}
+.body img,.body video{max-width:100%;border-radius:18px;margin:14px 0}
+.body a{color:var(--plum);text-decoration:underline}
+.body blockquote{border-inline-start:4px solid var(--lavender);padding:8px 16px;margin:14px 0;color:var(--muted);font-style:italic}
+[data-reveal]{opacity:0;transform:translateY(28px)}
+.no-motion [data-reveal]{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none}.hero{transition:none}}
+</style>
+</head>
+<body>
+<a class="vh" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="ACADI"><img src="img/logo.webp" alt="ACADI" width="173" height="40"></a>
+    <ul id="navlist"></ul>
+    <div class="right">
+      <div class="lang" role="group" aria-label="Language"><button data-lang="ar">عربي</button><button data-lang="en" class="on">EN</button><button data-lang="fr">FR</button></div>
+      <a class="btn" href="#classroom" data-i="n_cta">Start learning</a>
+      <a class="gear hidden" id="gear" href="#admin" title="Admin" aria-label="Admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
+      <button class="burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<nav class="drawer" id="drawer"></nav>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script>
+(function(){
+'use strict';
+var G = typeof gsap!=='undefined', reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(G) gsap.registerPlugin(ScrollTrigger);
+if(reduce||!G) document.documentElement.classList.add('no-motion');
+var lenis=null; if(G&&!reduce&&typeof Lenis!=='undefined'){ lenis=new Lenis({lerp:.09,smoothWheel:true}); lenis.on('scroll',ScrollTrigger.update); gsap.ticker.add(function(t){lenis.raf(t*1000)}); gsap.ticker.lagSmoothing(0) }
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var KIDS=['s1_1','s1_3','s1_4','s2_2','s2_3','s3_1','s3_2','s4_1','s4_2','s4_3','s5_2','s5_3','s5_4','s6_1','s6_2','s6_3','s6_4','s7_1','s7_2','s7_3'];
+var COLORS={lavender:'#E6DDF7',mint:'#D6F2E4',blush:'#FBE0EA',sky:'#DCEBFA',sun:'#FFF1D6',lilac:'#E7E3FF'};
+var DEEP={'#E6DDF7':'#A98BD8','#D6F2E4':'#6FC79C','#FBE0EA':'#E68FB0','#DCEBFA':'#7FAEE6','#FFF1D6':'#E2B14E','#E7E3FF':'#A08FE6'};
+function deep(c){return DEEP[c]||'#B9A4E6'}
+
+/* ---------------- i18n (UI chrome) ---------------- */
+var I={
+en:{n_home:'Home',n_class:'Parent Classroom',n_print:'Free Printables',n_res:'Parent Resources',n_about:'About ACADI',n_sup:'Support ACADI',n_shop:'Shop',n_col:'Collaborate',n_admin:'Admin',n_cta:'Start learning',soon:'Soon',
+ free:'100% free · no sign-up',cta1:'Explore Parent Classroom',cta2:'Download free resources',tk:['Free for every family','Parent Classroom','Free printables','Arabic · English · Français','Ages 2–15','Lebanon'],
+ w_k:'Welcome to ACADI',w_h1:'Practical help for parents,',w_h2:'free. Always.',p1b:'Parent Classroom',p1s:'Short lessons with videos, steps and activities.',p2b:'Free printables',p2s:'Visual schedules, routine charts, emotion cards.',p3b:'Trusted resources',p3s:'Plain-language articles, every source named.',p4b:'Not a clinic',p4s:'We support your doctors and therapists — we never replace them.',
+ c_k:'Parent Classroom · the heart of ACADI',c_h1:'Learn one step at a time,',c_h2:'then try it tonight.',c_p:'Each lesson: a short video, why it works, simple steps, a matching printable, and sources for reading more.',all:'See all →',steps:['Watch','Why','Steps','Print','Try'],
+ pr_k:'Free printables & learning tools',pr_h1:'Print tonight.',pr_h2:'Use tomorrow.',pr_p:'Free PDFs in Arabic, English and French. Each one says what it is for, the suggested age, and how to use it.',dl:'Download PDF',ages:'Ages',
+ h_k:'How ACADI helps',h_h1:'Real moments.',h_h2:'Real tools.',h_p:'Every lesson starts from something that happens in your home this week.',
+ r_k:'Parent Resources',r_h1:'Trusted information,',r_h2:'in plain words.',r_p:'Articles based on reliable sources. Every article names its source and links to the original.',src:'Source',
+ disc:'ACADI is not a hospital, therapy clinic or medical practice. Our content is educational and does not replace doctors, therapists or qualified specialists.',
+ m_k:'Our mission & community',m_h1:'Help first.',m_h2:'Everything else later.',m_p:'ACADI exists so a parent in Lebanon can find practical help for an everyday challenge without worrying about cost.',m_ph:'What should we teach next?',m_em:'Email (optional)',m_btn:'Suggest a topic',m_ok:'Thank you — we read every suggestion.',
+ su_k:'Support ACADI · completely optional',su_h:'Everything here stays free, whether or not you give.',su_p:'If ACADI has helped your family and you are able, a small voluntary contribution keeps the platform running.',su_w:'Whish Money (Lebanon)',su_b:'Buy Me a Coffee',su_q:'No lesson or download will ever ask you to donate first.',
+ shop_h:'The ACADI shop is coming later.',shop_p:'Once ACADI has earned the trust of families, we will add carefully selected products — sensory toys, routine aids, adaptive clothing. Education stays free, always.',shop_l:['Sensory learning toys','Physical routine & communication aids','Adaptive clothing & seamless socks'],
+ col_h:'Collaborate with ACADI',col_p:'We are preparing a verified-contributor programme for professionals, universities and organisations. Tell us about yourself and we will be in touch when it opens.',col_l:['Special education teachers','Occupational & speech therapists','Psychologists & child-development specialists','Universities, colleges & NGOs'],col_form:'Apply to collaborate',col_ok:'Thank you — we will contact you when the programme opens.',
+ f_name:'Full name',f_org:'Organisation / college',f_role:'Role (teacher, OT, doctor…)',f_city:'City',f_email:'Email',f_phone:'Phone / WhatsApp',f_about:'Tell us about your work and how you would like to contribute',f_send:'Send application',
+ pros_h:'Early collaborators',back:'← Back',about_h:'About ACADI',about_p:'ACADI is a free educational and support platform for parents and caregivers of children with special needs, ages 2–15, starting in Lebanon. We help with everyday parenting, learning, communication and daily routines through accessible information and practical tools.',
+ watch:'Watch the lesson',why:'Why it works',howto:'Step by step',materials:'Companion materials',links:'Links & reading',sources:'Sources',age:'Age',dur:'Duration',cat:'Topic',related:'Related',filter_all:'All',nothing:'Nothing published here yet — check back soon.',
+ f_c:'© ACADI · Lebanon · Free educational support for families, ages 2–15.',signin:'Sign in to claude.ai to see the live content.'},
+ar:{n_home:'الرئيسية',n_class:'صفّ الأهل',n_print:'مطبوعات مجانية',n_res:'مصادر للأهل',n_about:'عن أكادي',n_sup:'ادعم أكادي',n_shop:'المتجر',n_col:'تعاون معنا',n_admin:'الإدارة',n_cta:'ابدأ التعلّم',soon:'قريباً',
+ free:'مجاني ١٠٠٪ · بدون تسجيل',cta1:'استكشف صفّ الأهل',cta2:'حمّل المصادر المجانية',tk:['مجاني لكل عائلة','صفّ الأهل','مطبوعات مجانية','عربي · English · Français','من ٢ إلى ١٥ سنة','لبنان'],
+ w_k:'أهلاً بكم في أكادي',w_h1:'مساعدة عملية للأهل،',w_h2:'مجاناً. دائماً.',p1b:'صفّ الأهل',p1s:'دروس قصيرة مع فيديوهات وخطوات وأنشطة.',p2b:'مطبوعات مجانية',p2s:'جداول بصرية، لوحات روتين، بطاقات مشاعر.',p3b:'مصادر موثوقة',p3s:'مقالات بلغة بسيطة مع ذكر كل مصدر.',p4b:'لسنا عيادة',p4s:'ندعم أطباءكم ومعالجيكم — ولا نحلّ محلّهم.',
+ c_k:'صفّ الأهل · قلب أكادي',c_h1:'تعلّم خطوة خطوة،',c_h2:'وجرّبها الليلة.',c_p:'كل درس: فيديو قصير، لماذا ينجح، خطوات بسيطة، مطبوعة مرافقة، ومصادر للقراءة.',all:'عرض الكل ←',steps:['شاهد','لماذا','خطوات','اطبع','جرّب'],
+ pr_k:'مطبوعات وأدوات تعلّم مجانية',pr_h1:'اطبعها الليلة.',pr_h2:'استخدمها غداً.',pr_p:'ملفات PDF مجانية بالعربية والإنكليزية والفرنسية. كل مطبوعة تشرح الغرض منها والعمر المقترح.',dl:'حمّل PDF',ages:'الأعمار',
+ h_k:'كيف تساعد أكادي',h_h1:'لحظات حقيقية.',h_h2:'أدوات حقيقية.',h_p:'كل درس يبدأ من شيء يحدث في بيتك هذا الأسبوع.',
+ r_k:'مصادر للأهل',r_h1:'معلومات موثوقة،',r_h2:'بكلمات بسيطة.',r_p:'مقالات مبنية على مصادر موثوقة. كل مقال يذكر مصدره ويربط بالأصل.',src:'المصدر',
+ disc:'أكادي ليست مستشفى ولا عيادة ولا ممارسة طبية. محتوانا تعليمي ولا يحل محل الأطباء أو المعالجين أو المختصين.',
+ m_k:'رسالتنا ومجتمعنا',m_h1:'المساعدة أولاً.',m_h2:'وكل شيء آخر لاحقاً.',m_p:'وُجدت أكادي ليجد الأهل في لبنان مساعدة عملية لتحدٍّ يومي من دون القلق على الكلفة.',m_ph:'ماذا نعلّم بعد ذلك؟',m_em:'البريد الإلكتروني (اختياري)',m_btn:'اقترح موضوعاً',m_ok:'شكراً — نقرأ كل اقتراح.',
+ su_k:'ادعم أكادي · اختياري تماماً',su_h:'كل شيء هنا يبقى مجانياً، تبرّعت أم لم تتبرّع.',su_p:'إذا ساعدت أكادي عائلتك وكنت قادراً، فمساهمة طوعية صغيرة تبقي المنصة تعمل.',su_w:'Whish Money (لبنان)',su_b:'Buy Me a Coffee',su_q:'لن يطلب منك أي درس أو تحميل التبرّع أولاً.',
+ shop_h:'متجر أكادي قادم لاحقاً.',shop_p:'بعد أن تكسب أكادي ثقة العائلات، سنضيف منتجات مختارة بعناية — ألعاب حسية، أدوات روتين، ملابس مريحة. التعليم يبقى مجانياً دائماً.',shop_l:['ألعاب تعلّم حسية','أدوات روتين وتواصل','ملابس مريحة وجوارب بلا درزات'],
+ col_h:'تعاون مع أكادي',col_p:'نحضّر برنامجاً للمساهمين الموثّقين من المختصين والجامعات والمنظمات. عرّفنا بنفسك وسنتواصل معك عند الإطلاق.',col_l:['معلمو التربية الخاصة','معالجون وظيفيون ومعالجو نطق','أخصائيو نفس ونمو الطفل','جامعات وكليات ومنظمات'],col_form:'قدّم طلب تعاون',col_ok:'شكراً — سنتواصل معك عند إطلاق البرنامج.',
+ f_name:'الاسم الكامل',f_org:'المؤسسة / الكلية',f_role:'الدور (معلم، معالج، طبيب…)',f_city:'المدينة',f_email:'البريد الإلكتروني',f_phone:'الهاتف / واتساب',f_about:'حدّثنا عن عملك وكيف تودّ المساهمة',f_send:'أرسل الطلب',
+ pros_h:'المتعاونون الأوائل',back:'→ رجوع',about_h:'عن أكادي',about_p:'أكادي منصة تعليمية ودعم مجانية للأهل ومقدّمي الرعاية لأطفال ذوي الاحتياجات الخاصة من ٢ إلى ١٥ سنة، تبدأ من لبنان. نساعد في التربية اليومية والتعلّم والتواصل والروتين عبر معلومات مبسّطة وأدوات عملية.',
+ watch:'شاهد الدرس',why:'لماذا ينجح',howto:'خطوة بخطوة',materials:'مواد مرافقة',links:'روابط وقراءات',sources:'المصادر',age:'العمر',dur:'المدة',cat:'الموضوع',related:'ذات صلة',filter_all:'الكل',nothing:'لا شيء منشور هنا بعد — عُد قريباً.',
+ f_c:'© أكادي · لبنان · دعم تعليمي مجاني للعائلات، من ٢ إلى ١٥ سنة.',signin:'سجّل الدخول إلى claude.ai لرؤية المحتوى المباشر.'},
+fr:{n_home:'Accueil',n_class:'Classe des parents',n_print:'Imprimables gratuits',n_res:'Ressources parents',n_about:'À propos',n_sup:'Soutenir ACADI',n_shop:'Boutique',n_col:'Collaborer',n_admin:'Admin',n_cta:'Commencer',soon:'Bientôt',
+ free:'100 % gratuit · sans inscription',cta1:'Découvrir la Classe des parents',cta2:'Télécharger les ressources',tk:['Gratuit pour chaque famille','Classe des parents','Imprimables gratuits','عربي · English · Français','2 à 15 ans','Liban'],
+ w_k:'Bienvenue chez ACADI',w_h1:'Une aide concrète pour les parents,',w_h2:'gratuite. Toujours.',p1b:'Classe des parents',p1s:'Leçons courtes avec vidéos, étapes et activités.',p2b:'Imprimables gratuits',p2s:"Plannings visuels, tableaux de routine, cartes d'émotions.",p3b:'Ressources fiables',p3s:'Articles en langage simple, chaque source citée.',p4b:'Pas une clinique',p4s:'Nous soutenons vos médecins et thérapeutes — jamais à leur place.',
+ c_k:"Classe des parents · le cœur d'ACADI",c_h1:'Apprenez une étape à la fois,',c_h2:'puis essayez ce soir.',c_p:'Chaque leçon : une courte vidéo, pourquoi ça marche, des étapes simples, un imprimable et des sources.',all:'Tout voir →',steps:['Voir','Pourquoi','Étapes','Imprimer','Essayer'],
+ pr_k:"Imprimables et outils d'apprentissage gratuits",pr_h1:'Imprimez ce soir.',pr_h2:'Utilisez demain.',pr_p:"PDF gratuits en arabe, anglais et français. Chacun indique à quoi il sert et l'âge suggéré.",dl:'Télécharger le PDF',ages:'Âges',
+ h_k:'Comment ACADI aide',h_h1:'Des moments réels.',h_h2:'Des outils réels.',h_p:'Chaque leçon part de quelque chose qui se passe chez vous cette semaine.',
+ r_k:'Ressources parents',r_h1:'Des informations fiables,',r_h2:'en mots simples.',r_p:"Articles fondés sur des sources fiables. Chaque article cite sa source et renvoie à l'original.",src:'Source',
+ disc:"ACADI n'est ni un hôpital, ni une clinique, ni un cabinet médical. Notre contenu est éducatif et ne remplace pas les médecins, thérapeutes ou spécialistes.",
+ m_k:'Notre mission et notre communauté',m_h1:"Aider d'abord.",m_h2:'Le reste ensuite.',m_p:"ACADI existe pour qu'un parent au Liban trouve une aide concrète à un défi quotidien sans s'inquiéter du coût.",m_ph:'Que devrions-nous enseigner ensuite ?',m_em:'E-mail (facultatif)',m_btn:'Suggérer un sujet',m_ok:'Merci — nous lisons chaque suggestion.',
+ su_k:'Soutenir ACADI · totalement facultatif',su_h:'Tout reste gratuit ici, que vous donniez ou non.',su_p:"Si ACADI a aidé votre famille et que vous le pouvez, une petite contribution volontaire fait tourner la plateforme.",su_w:'Whish Money (Liban)',su_b:'Buy Me a Coffee',su_q:"Aucune leçon ni téléchargement ne vous demandera de donner d'abord.",
+ shop_h:"La boutique ACADI arrive plus tard.",shop_p:"Quand ACADI aura gagné la confiance des familles, nous ajouterons des produits choisis avec soin. L'éducation reste gratuite, toujours.",shop_l:["Jouets d'apprentissage sensoriel",'Aides physiques aux routines et à la communication','Vêtements adaptés et chaussettes sans coutures'],
+ col_h:'Collaborer avec ACADI',col_p:"Nous préparons un programme de contributeurs vérifiés pour les professionnels, universités et organisations. Présentez-vous et nous vous contacterons à l'ouverture.",col_l:['Enseignants spécialisés','Ergothérapeutes et orthophonistes','Psychologues et spécialistes du développement','Universités, collèges et ONG'],col_form:'Postuler pour collaborer',col_ok:"Merci — nous vous contacterons à l'ouverture du programme.",
+ f_name:'Nom complet',f_org:'Organisation / établissement',f_role:'Rôle (enseignant, ergo, médecin…)',f_city:'Ville',f_email:'E-mail',f_phone:'Téléphone / WhatsApp',f_about:'Parlez-nous de votre travail et de votre contribution souhaitée',f_send:'Envoyer la candidature',
+ pros_h:'Premiers collaborateurs',back:'← Retour',about_h:'À propos d\'ACADI',about_p:"ACADI est une plateforme éducative et de soutien gratuite pour les parents et aidants d'enfants à besoins particuliers, de 2 à 15 ans, à partir du Liban.",
+ watch:'Voir la leçon',why:'Pourquoi ça marche',howto:'Étape par étape',materials:"Matériel d'accompagnement",links:'Liens et lectures',sources:'Sources',age:'Âge',dur:'Durée',cat:'Thème',related:'Voir aussi',filter_all:'Tous',nothing:'Rien de publié ici pour le moment.',
+ f_c:'© ACADI · Liban · Soutien éducatif gratuit pour les familles, 2 à 15 ans.',signin:'Connectez-vous à claude.ai pour voir le contenu en direct.'}
+};
+var lang='en'; try{lang=localStorage.getItem('acadi_lang')||'en'}catch(e){}
+function T(k){return (I[lang]&&I[lang][k]!=null)?I[lang][k]:I.en[k]}
+function L(obj,field){ if(!obj) return ''; var v=obj[field+'_'+lang]; if(v) return v; return obj[field+'_en']||obj[field]||'' }
+
+/* ---------------- default content (used until the admin publishes) ---------------- */
+var DEF={
+ settings:{ whish:'',bmac:'',whatsapp:'',email:'',
+  pages:{welcome:{h1_en:'',h2_en:'',p_en:'',pillars:[{icon:'',t_en:'',s_en:''},{icon:'',t_en:'',s_en:''},{icon:'',t_en:'',s_en:''},{icon:'',t_en:'',s_en:''}]},about:{title_en:'',body_en:'',images:[],videoAsset:'',videoUrl:'',kid:'s4_3'},support:{h_en:'',p_en:'',q_en:''},mission:{h1_en:'',h2_en:'',p_en:'',images:[]}},
+  slides:[
+   {word_en:'ROUTINES',word_ar:'الروتين',word_fr:'ROUTINES',n_en:'01 / Daily routines',n_ar:'٠١ / الروتين اليومي',n_fr:'01 / Routines',h_en:'Make tomorrow morning predictable.',h_ar:'اجعل صباح الغد متوقّعاً.',h_fr:'Rendez demain matin prévisible.',p_en:'Learn how a four-picture schedule turns chaos into calm — then print one tonight.',p_ar:'تعلّم كيف يحوّل جدول من أربع صور الفوضى إلى هدوء — ثم اطبع واحداً الليلة.',p_fr:'Apprenez comment un planning de quatre images transforme le chaos en calme.',bg:'#E6DDF7',main:'s6_3',l:'s5_3',r:'s2_3',tab_en:'Routines',tab_ar:'الروتين',tab_fr:'Routines'},
+   {word_en:'DRESSING',word_ar:'اللبس',word_fr:'HABILLAGE',n_en:'02 / Getting dressed',n_ar:'٠٢ / ارتداء الملابس',n_fr:"02 / S'habiller",h_en:'Socks, buttons, shoelaces — one win at a time.',h_ar:'جوارب، أزرار، رباط الحذاء — انتصار تلو الآخر.',h_fr:'Chaussettes, boutons, lacets — une victoire à la fois.',p_en:'Short lessons that break dressing into steps your child can own.',p_ar:'دروس قصيرة تقسّم اللبس إلى خطوات يملكها طفلك.',p_fr:"Des leçons courtes qui découpent l'habillage en étapes.",bg:'#FBE0EA',main:'s7_1',l:'s7_2',r:'s6_4',tab_en:'Getting dressed',tab_ar:'اللبس',tab_fr:"S'habiller"},
+   {word_en:'FEELINGS',word_ar:'المشاعر',word_fr:'ÉMOTIONS',n_en:'03 / Emotions & communication',n_ar:'٠٣ / المشاعر والتواصل',n_fr:'03 / Émotions',h_en:"Words and pictures for what's hard to say.",h_ar:'كلمات وصور لما يصعب قوله.',h_fr:'Des mots et des images pour ce qui est difficile à dire.',p_en:'Emotion cards, first–then boards and gentle scripts for big moments.',p_ar:'بطاقات مشاعر، لوحات أولاً–ثم، وعبارات لطيفة للحظات الكبيرة.',p_fr:"Cartes d'émotions, tableaux « d'abord–ensuite » et phrases douces.",bg:'#D6F2E4',main:'s4_1',l:'s4_2',r:'s1_3',tab_en:'Feelings',tab_ar:'المشاعر',tab_fr:'Émotions'},
+   {word_en:'SENSORY',word_ar:'الحواس',word_fr:'SENSORIEL',n_en:'04 / Sensory needs',n_ar:'٠٤ / الاحتياجات الحسية',n_fr:'04 / Besoins sensoriels',h_en:'Quiet when the world is loud.',h_ar:'هدوء حين يكون العالم صاخباً.',h_fr:'Du calme quand le monde est bruyant.',p_en:'Understand overload, plan outings, and build a calm corner at home.',p_ar:'افهم الإرهاق الحسي، خطّط للخروج، وابنِ زاوية هادئة في البيت.',p_fr:'Comprendre la surcharge, planifier les sorties, créer un coin calme.',bg:'#DCEBFA',main:'s5_4',l:'s6_2',r:'s2_2',tab_en:'Sensory',tab_ar:'الحواس',tab_fr:'Sensoriel'}],
+  helps:[
+   {t_en:'Morning & bedtime routines',t_ar:'روتين الصباح والنوم',t_fr:'Routines du matin et du soir',p_en:'Picture schedules that make the day predictable.',p_ar:'جداول مصوّرة تجعل اليوم متوقّعاً.',p_fr:'Des plannings en images qui rendent la journée prévisible.',kid:'s6_3'},
+   {t_en:'Getting dressed & tying shoelaces',t_ar:'اللبس وربط الحذاء',t_fr:"S'habiller et lacer ses chaussures",p_en:'Small steps, soft clothes, one win at a time.',p_ar:'خطوات صغيرة، ملابس ناعمة، انتصار تلو الآخر.',p_fr:'Petites étapes, vêtements doux, une victoire à la fois.',kid:'s7_1'},
+   {t_en:'Emotions & communication',t_ar:'المشاعر والتواصل',t_fr:'Émotions et communication',p_en:"Cards and words for what's hard to say.",p_ar:'بطاقات وكلمات لما يصعب قوله.',p_fr:'Des cartes et des mots pour ce qui est difficile à dire.',kid:'s4_1'},
+   {t_en:'Sensory activities',t_ar:'أنشطة حسية',t_fr:'Activités sensorielles',p_en:'Calming and alerting play you can do at home.',p_ar:'لعب مهدّئ ومنبّه في البيت.',p_fr:'Des jeux apaisants ou stimulants à la maison.',kid:'s5_2'},
+   {t_en:'Learning independence',t_ar:'تعلّم الاستقلالية',t_fr:"Apprendre l'autonomie",p_en:'Packing a bag, putting clothes away, choosing.',p_ar:'تحضير الحقيبة، ترتيب الملابس، الاختيار.',p_fr:'Préparer son sac, ranger, choisir.',kid:'s3_2'},
+   {t_en:'Transitions & organisation',t_ar:'الانتقالات والتنظيم',t_fr:'Transitions et organisation',p_en:'Leaving the house, changing activities, school days.',p_ar:'الخروج من البيت، تغيير النشاط، أيام المدرسة.',p_fr:"Sortir, changer d'activité, les jours d'école.",kid:'s6_1'}]},
+ lessons:[
+  {id:'morning-routine',published:true,order:1,color:'lavender',kid:'s6_3',cat:'routines',ages:'3–8',duration:'6 min',title_en:'Teaching a morning routine with pictures',title_ar:'تعليم روتين الصباح بالصور',title_fr:'Enseigner une routine du matin en images',summary_en:'Why visual routines help, how to build a 4-step board, and what to do when a step is skipped.',summary_ar:'لماذا يساعد الروتين البصري، كيف تبني لوحة من ٤ خطوات، وماذا تفعل عند تخطّي خطوة.',summary_fr:'Pourquoi les routines visuelles aident, comment créer un tableau en 4 étapes.',why_en:'Many children find words fleeting and pictures steady. A visual schedule takes the instruction out of your voice and puts it on the wall, so the routine belongs to the child, not to a reminder.',steps_en:'Choose 4 steps for the morning (wake, toilet, dress, breakfast).\nPrint the cards and stick them on a strip at your child\'s eye level.\nWalk through it together once, pointing, not talking.\nLet your child move or flip each card when done.\nWhen a step is skipped, point at the board instead of repeating yourself.',videoUrl:'',videoAsset:'',images:[],files:[],links:[{t:'Visual schedule PDF',u:'#printables'}],sources_en:'Source references are added per article by the ACADI team.'},
+  {id:'getting-dressed',published:true,order:2,color:'blush',kid:'s7_1',cat:'independence',ages:'4–10',duration:'5 min',title_en:'Getting dressed without the morning fight',title_ar:'ارتداء الملابس بدون معركة الصباح',title_fr:"S'habiller sans la bataille du matin",summary_en:'Breaking dressing into small wins, choosing clothes that feel okay, and a shoelace method that works.',summary_ar:'تقسيم اللبس إلى انتصارات صغيرة، اختيار ملابس مريحة، وطريقة ربط الحذاء التي تنجح.',summary_fr:"Découper l'habillage en petites victoires et une méthode de lacets qui marche.",why_en:'Dressing is five tasks pretending to be one. Backward chaining — you do the first steps, the child finishes — gives a feeling of success every single morning.',steps_en:'Lay clothes out in the order they go on.\nStart with the last step only: your child pulls the sock up the final inch.\nAdd one earlier step each week.\nRemove tags; turn seams out if they bother.\nFor laces, teach the "bunny ears" method on a shoe on the table first.',videoUrl:'',videoAsset:'',images:[],files:[],links:[],sources_en:''},
+  {id:'noisy-places',published:true,order:3,color:'sky',kid:'s2_2',cat:'sensory',ages:'2–15',duration:'7 min',title_en:'Noisy places: preparing for outings',title_ar:'الأماكن الصاخبة: التحضير للخروج',title_fr:'Lieux bruyants : préparer les sorties',summary_en:'Reading early signs of overload, a quiet-break card, and how to plan a visit to a busy souk or family gathering.',summary_ar:'قراءة علامات الإرهاق الحسي المبكرة، بطاقة استراحة هادئة، والتخطيط لزيارة السوق أو العزومة.',summary_fr:'Repérer les premiers signes de surcharge et planifier une sortie.',why_en:'Overload builds quietly before it shows. A plan made at home — where to go for quiet, what to bring, when to leave — turns a feared outing into a practised one.',steps_en:'Tell your child where you are going using a photo.\nPack headphones, a fidget and a snack in a "calm bag".\nAgree on a quiet-break sign.\nArrive early, before the crowd.\nLeave on a good moment, not after a bad one.',videoUrl:'',videoAsset:'',images:[],files:[],links:[],sources_en:''}],
+ printables:[
+  {id:'daily-schedule',published:true,order:1,color:'lavender',cat:'routines',ages:'2–12',title_en:'Daily visual schedule',title_ar:'جدول بصري يومي',title_fr:'Planning visuel quotidien',summary_en:'Customisable board with 24 picture cards.',summary_ar:'لوحة قابلة للتخصيص مع ٢٤ بطاقة.',summary_fr:'Tableau personnalisable avec 24 cartes.',howto_en:'Print on thick paper, cut the cards, laminate if you can. Velcro dots make it reusable.',files:[],links:[]},
+  {id:'routine-charts',published:true,order:2,color:'blush',cat:'routines',ages:'3–10',title_en:'Morning & bedtime routine charts',title_ar:'لوحات روتين الصباح والنوم',title_fr:'Tableaux de routine matin et coucher',summary_en:'Two charts, Arabic and English on the same page.',summary_ar:'لوحتان بالعربية والإنكليزية في صفحة واحدة.',summary_fr:'Deux tableaux, arabe et anglais.',howto_en:'',files:[],links:[]},
+  {id:'first-then',published:true,order:3,color:'mint',cat:'communication',ages:'2–12',title_en:'First–Then board + 40 cards',title_ar:'لوحة أولاً–ثم + ٤٠ بطاقة',title_fr:"Tableau « D'abord–Ensuite » + 40 cartes",summary_en:'For transitions and hard asks.',summary_ar:'للانتقالات والطلبات الصعبة.',summary_fr:'Pour les transitions et les demandes difficiles.',howto_en:'',files:[],links:[]},
+  {id:'emotion-cards',published:true,order:4,color:'sky',cat:'emotions',ages:'3–15',title_en:'Emotion & communication cards',title_ar:'بطاقات المشاعر والتواصل',title_fr:"Cartes d'émotions et de communication",summary_en:'36 cut-out cards with faces and words.',summary_ar:'٣٦ بطاقة بوجوه وكلمات.',summary_fr:'36 cartes à découper.',howto_en:'',files:[],links:[]},
+  {id:'dressing-steps',published:true,order:5,color:'sun',cat:'independence',ages:'4–10',title_en:'Shoelaces & dressing step cards',title_ar:'بطاقات خطوات اللبس وربط الحذاء',title_fr:'Cartes étapes : lacets et habillage',summary_en:'Step-by-step picture cards.',summary_ar:'بطاقات مصوّرة خطوة بخطوة.',summary_fr:'Cartes illustrées étape par étape.',howto_en:'',files:[],links:[]},
+  {id:'social-story-school',published:true,order:6,color:'lilac',cat:'transitions',ages:'4–12',title_en:'Social story: going to school',title_ar:'قصة اجتماعية: الذهاب إلى المدرسة',title_fr:"Scénario social : aller à l'école",summary_en:'An 8-page story to read the night before.',summary_ar:'قصة من ٨ صفحات تُقرأ في الليلة السابقة.',summary_fr:'Une histoire de 8 pages à lire la veille.',howto_en:'',files:[],links:[]}],
+ articles:[
+  {id:'sensory-processing',published:true,order:1,cat:'understanding',title_en:'What "sensory processing" actually means for your child',title_ar:'ماذا تعني «المعالجة الحسية» فعلاً لطفلك',title_fr:'Ce que « traitement sensoriel » veut vraiment dire',summary_en:'The seven senses, what over- and under-responding look like, and why it matters at home.',summary_ar:'الحواس السبع، كيف يبدو فرط الاستجابة ونقصها، ولماذا يهم في البيت.',summary_fr:"Les sept sens et pourquoi ça compte à la maison.",body_en:'',source:'',sourceUrl:'',images:[],videoUrl:'',videoAsset:'',files:[],links:[]},
+  {id:'talking-to-school',published:true,order:2,cat:'school',title_en:"Talking to your child's school in Lebanon",title_ar:'التحدث مع مدرسة طفلك في لبنان',title_fr:"Parler à l'école de votre enfant au Liban",summary_en:'What to ask for, how to prepare a one-page profile, and what to do if the answer is no.',summary_ar:'ماذا تطلب، كيف تحضّر ملفاً من صفحة واحدة، وماذا تفعل إذا كان الجواب لا.',summary_fr:"Quoi demander et comment préparer un profil d'une page.",body_en:'',source:'',sourceUrl:'',images:[],videoUrl:'',videoAsset:'',files:[],links:[]},
+  {id:'developmental-delays',published:true,order:3,cat:'development',title_en:'Developmental delays: early signs and next steps',title_ar:'تأخر النمو: العلامات المبكرة والخطوات التالية',title_fr:'Retards de développement : premiers signes',summary_en:'A calm guide to what to watch for and who to talk to — without panic and without labels.',summary_ar:'دليل هادئ لما تراقبه ومن تكلّم — بلا هلع وبلا تصنيفات.',summary_fr:'Un guide calme sur quoi observer et à qui parler.',body_en:'',source:'',sourceUrl:'',images:[],videoUrl:'',videoAsset:'',files:[],links:[]}],
+ products:[], collaborators:[]
+};
+var CATS={routines:{en:'Routines',ar:'الروتين',fr:'Routines'},independence:{en:'Independence',ar:'الاستقلالية',fr:'Autonomie'},sensory:{en:'Sensory',ar:'الحواس',fr:'Sensoriel'},communication:{en:'Communication',ar:'التواصل',fr:'Communication'},emotions:{en:'Emotions',ar:'المشاعر',fr:'Émotions'},school:{en:'School',ar:'المدرسة',fr:'École'},play:{en:'Play & learning',ar:'اللعب والتعلّم',fr:'Jeu et apprentissage'},transitions:{en:'Transitions',ar:'الانتقالات',fr:'Transitions'},understanding:{en:'Understanding',ar:'فهم',fr:'Comprendre'},development:{en:'Development',ar:'النمو',fr:'Développement'}};
+function PG(page,field,fallbackKey){ var pg=(S.settings.pages||{})[page]||{}; var v=L(pg,field); return v||(fallbackKey?T(fallbackKey):'') }
+function catName(c){return (CATS[c]&&(CATS[c][lang]||CATS[c].en))||c||''}
+
+/* ---------------- data layer (db with default fallback) ---------------- */
+var S={settings:JSON.parse(JSON.stringify(DEF.settings)),lessons:DEF.lessons.slice(),printables:DEF.printables.slice(),articles:DEF.articles.slice(),products:[],collaborators:[],applications:[],suggestions:[]};
+var db=null, assets=null, user=null, isAdmin=false, live=false;
+function imgSrc(x){ if(!x) return ''; if(/^s\d_\d$/.test(x)) return 'img/'+x+'.webp'; if(/^https?:|^\/|^data:/.test(x)) return x; return '/_blob/'+x }
+function published(list){ return list.filter(function(x){return x.published!==false}).sort(function(a,b){return (a.order||99)-(b.order||99)}) }
+function toast(m){ var t=$('#toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none'},2600) }
+
+async function initPlatform(){
+  if(location.protocol==='file:'&&/previewadmin/.test(location.search)){ isAdmin=true; renderNav(); if(route().page==='admin') render(); }
+  if(!window.claude||!claude.use) return;
+  try{
+    user=await claude.use('user'); isAdmin=!!(user&&user.canEdit&&user.canEdit());
+    db=await claude.use('db');
+    if(db){
+      live=true;
+      var sd=await db.doc('content/settings').get().catch(function(){return null});
+      if(sd&&sd.exists&&sd.data()){ var sdd=sd.data(); S.settings=Object.assign({},DEF.settings,sdd); S.settings.pages=Object.assign({},DEF.settings.pages,sdd.pages||{}); }
+      for(var k of ['lessons','printables','articles','products','collaborators']){
+        var snap=await db.collection(k).get().catch(function(){return null});
+        if(snap&&snap.docs&&snap.docs.length) S[k]=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())});
+        else if(snap&&snap.docs) S[k]=(k==='products'||k==='collaborators')?[]:S[k];
+      }
+      if(isAdmin){
+        for(var k2 of ['applications','suggestions']){ var sn=await db.collection(k2).get().catch(function(){return null}); if(sn&&sn.docs){ var out=[]; sn.docs.forEach(function(d){ var dd=d.data()||{}; (dd.items||[dd]).forEach(function(it,n){ out.push(Object.assign({id:d.id+':'+n,_doc:d.id,_n:n},it)) }) }); S[k2]=out } }
+        assets=await claude.use('assets');
+      }
+      render();
+    }
+  }catch(e){ console.warn('platform',e) }
+  renderNav();
+}
+
+/* ---------------- router ---------------- */
+var ROUTES=['home','classroom','lesson','printables','resources','article','about','support','shop','product','collaborate','admin'];
+function route(){ var h=(location.hash||'#home').slice(1).split('/'); return {page:ROUTES.indexOf(h[0])>-1?h[0]:'home', id:h[1]||''} }
+window.addEventListener('hashchange',function(){ render(); if(lenis) lenis.scrollTo(0,{immediate:true}); else window.scrollTo(0,0) });
+
+function renderNav(){
+  var r=route();
+  var items=[['home','n_home'],['classroom','n_class'],['printables','n_print'],['resources','n_res'],['about','n_about'],['support','n_sup'],['shop','n_shop',1],['collaborate','n_col',1]];
+  var html=items.map(function(it){return '<li><a href="#'+it[0]+'" class="'+(r.page===it[0]?'on':'')+'">'+T(it[1])+(it[2]?'<span class="soon">'+T('soon')+'</span>':'')+'</a></li>'}).join('');
+  $('#navlist').innerHTML=html;
+  var gear=$('#gear'); if(gear) gear.classList.toggle('hidden',!isAdmin);
+  $('#drawer').innerHTML=items.map(function(it){return '<a href="#'+it[0]+'">'+T(it[1])+(it[2]?' <span class="soon" style="font-size:10px;background:var(--star);border-radius:99px;padding:2px 6px">'+T('soon')+'</span>':'')+'</a>'}).join('')+'';
+  $('[data-i="n_cta"]').textContent=T('n_cta');
+  $$('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===lang)});
+}
+$('#burger').addEventListener('click',function(){$('#drawer').classList.toggle('open')});
+$('#drawer').addEventListener('click',function(){$('#drawer').classList.remove('open')});
+$$('.lang button').forEach(function(b){b.addEventListener('click',function(){lang=b.dataset.lang; try{localStorage.setItem('acadi_lang',lang)}catch(e){} document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr'; render()})});
+
+function footer(){ return '<footer class="wrap"><img src="img/logo.webp" alt="ACADI"><ul><li><a href="#classroom">'+T('n_class')+'</a></li><li><a href="#printables">'+T('n_print')+'</a></li><li><a href="#resources">'+T('n_res')+'</a></li><li><a href="#about">'+T('n_about')+'</a></li><li><a href="#support">'+T('n_sup')+'</a></li><li><a href="#collaborate">'+T('n_col')+'</a></li></ul><span>'+T('f_c')+'</span></footer>' }
+function banner(crumb,title,kid,color,word){ var c=COLORS[color]||color||COLORS.lavender; return '<div class="banner" style="--bc:'+c+';--wc:'+deep(c)+'"><span class="bw anton">'+esc(word||'')+'</span><div class="wrap"><div><div class="crumb"><a href="#home">'+T('n_home')+'</a> / '+esc(crumb)+'</div><h1>'+esc(title)+'</h1><div id="bsub"></div></div><div class="bart">'+(kid?'<img src="'+imgSrc(kid)+'" alt="">':'')+'</div></div></div>' }
+
+/* ---------------- cards ---------------- */
+function lessonCard(l){ var c=COLORS[l.color]||COLORS.lavender; var cover=l.images&&l.images[0];
+  return '<a class="lesson" href="#lesson/'+esc(l.id)+'" style="--c:'+c+'" data-reveal>'+(cover?'<img class="cover" src="'+imgSrc(cover)+'" alt=""><span class="shade"></span>':'')+'<span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><div class="meta"><span class="chip">'+esc(catName(l.cat))+'</span>'+(l.ages?'<span class="chip">'+T('ages')+' '+esc(l.ages)+'</span>':'')+(l.duration?'<span class="chip">'+esc(l.duration)+'</span>':'')+'</div><h3>'+esc(L(l,'title'))+'</h3><p>'+esc(L(l,'summary'))+'</p><div class="steps">'+T('steps').map(function(s){return '<i>'+s+'</i>'}).join('')+'</div>'+(!cover&&l.kid?'<img class="kid-img" src="'+imgSrc(l.kid)+'" alt="">':'')+'</a>' }
+function printCard(p){ var c=COLORS[p.color]||COLORS.lavender; var f=(p.files&&p.files[0])||null; var href=f?imgSrc(f.id||f):'#printables/'+p.id; var thumb=p.images&&p.images[0];
+  return '<a class="print" href="'+href+'" '+(f?'target="_blank" rel="noopener"':'')+' style="--c:'+c+'" data-reveal><span class="ic '+(thumb?'has':'')+'">'+(thumb?'<img src="'+imgSrc(thumb)+'" alt="">':'')+'</span><div><h3>'+esc(L(p,'title'))+'</h3><p>'+esc(L(p,'summary'))+(p.ages?' · '+T('ages')+' '+esc(p.ages):'')+'</p><span class="dl">'+(f?T('dl')+' ↓':T('soon'))+'</span></div></a>' }
+function artCard(a){ var th=a.images&&a.images[0]; return '<a class="art" href="#article/'+esc(a.id)+'" data-reveal>'+(th?'<img class="thumb" src="'+imgSrc(th)+'" alt="">':'')+'<span class="cat">'+esc(catName(a.cat))+'</span><h3>'+esc(L(a,'title'))+'</h3><p>'+esc(L(a,'summary'))+'</p><span class="src">'+T('src')+': '+esc(a.source||'—')+'</span></a>' }
+
+/* ---------------- pages ---------------- */
+function pillarsHtml(rev){ var defs=[['<img src="img/ic_class.webp" alt="">','lavender','p1b','p1s'],['<img src="img/ic_print.webp" alt="">','mint','p2b','p2s'],['<img src="img/ic_res.webp" alt="">','blush','p3b','p3s'],['<img src="img/ic_care.webp" alt="">','sky','p4b','p4s']]; var ps=((S.settings.pages||{}).welcome||{}).pillars||[]; return defs.map(function(d,i){ var c=ps[i]||{}; var icon=c.icon?'<img src="'+imgSrc(c.icon)+'" alt="" style="width:34px;height:34px;object-fit:contain">':d[0]; return '<div class="pill" '+(rev?'data-reveal':'')+'><span class="ic" style="background:var(--'+d[1]+')">'+icon+'</span><div><b>'+esc(L(c,'t')||T(d[2]))+'</b><span>'+esc(L(c,'s')||T(d[3]))+'</span></div></div>' }).join('') }
+function pageHome(){
+  var s=S.settings; var sl=s.slides;
+  var h='<section class="hero" id="top"><div class="wrap stage"><div class="word anton" id="word"></div><div class="floor"></div><div class="cast" id="cast"><div class="kid side l" id="kidL"><img alt=""></div><div class="kid side r" id="kidR"><img alt=""></div><div class="kid main" id="kidM"><img alt=""></div></div>'
+   +'<div class="copy" id="copy"><span class="free">'+T('free')+'</span><div class="n" id="cN"></div><h1 id="cH"></h1><p id="cP"></p><div class="acts"><a class="btn" href="#classroom">'+T('cta1')+'</a><a class="btn light" href="#printables">'+T('cta2')+'</a></div></div>'
+   +'<div class="arrows"><button class="arrow" id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><button class="arrow" id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>'
+   +'<div class="tabs" id="tabs">'+sl.map(function(x,i){return '<button class="tab'+(i===0?' on':'')+'" data-i="'+i+'"><b>0'+(i+1)+'</b> '+esc(L(x,'tab'))+'</button>'}).join('')+'</div></div></section>'
+   +'<div class="ticker"><div class="row anton" id="ticker">'+T('tk').map(function(t){return '<span>'+t+'</span>'}).join('')+'</div></div>';
+  h+='<section class="welcome" id="welcome"><div class="wrap"><div><p class="kick" data-reveal>'+T('w_k')+'</p><h2 data-reveal>'+esc(PG('welcome','h1','w_h1'))+' <span class="anton">'+esc(PG('welcome','h2','w_h2'))+'</span></h2><p class="sub" data-reveal>'+esc(PG('welcome','p','about_p'))+'</p><div class="acts" data-reveal><a class="btn" href="#classroom">'+T('cta1')+'</a><a class="btn light" href="#printables">'+T('cta2')+'</a></div></div><div class="pillars">'
+   +pillarsHtml(true)+'</div></div></section>';
+  var ls=published(S.lessons).slice(0,3);
+  h+='<section class="class" id="classroom-home" style="background:#fff"><div class="wrap"><div class="head"><div><p class="kick" data-reveal>'+T('c_k')+'</p><h2 data-reveal>'+T('c_h1')+' <span class="anton">'+T('c_h2')+'</span></h2><p class="sub" data-reveal>'+T('c_p')+'</p></div><a class="btn light" href="#classroom" data-reveal>'+T('all')+'</a></div><div class="grid3">'+(ls.length?ls.map(lessonCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div></div></section>';
+  var ps=published(S.printables).slice(0,6);
+  h+='<section class="prints" id="printables-home"><div class="wrap"><div class="head"><div><p class="kick" data-reveal>'+T('pr_k')+'</p><h2 data-reveal>'+T('pr_h1')+' <span class="anton">'+T('pr_h2')+'</span></h2><p class="sub" data-reveal>'+T('pr_p')+'</p></div><a class="btn light" href="#printables" data-reveal>'+T('all')+'</a></div><div class="pgrid">'+(ps.length?ps.map(printCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div></div></section>';
+  h+='<section style="padding-top:0"><div class="wrap"><div class="helps"><p class="kick" data-reveal>'+T('h_k')+'</p><h2 data-reveal>'+T('h_h1')+' <span class="anton">'+T('h_h2')+'</span></h2><p class="sub" data-reveal>'+T('h_p')+'</p><div class="hgrid">'+s.helps.map(function(x,i){return '<a class="help" href="#classroom" data-reveal><span class="num anton">0'+(i+1)+'</span><h3>'+esc(L(x,'t'))+'</h3><p>'+esc(L(x,'p'))+'</p><img src="'+imgSrc(x.kid)+'" alt=""></a>'}).join('')+'</div></div></div></section>';
+  var as=published(S.articles).slice(0,3);
+  h+='<section class="res" id="resources-home" style="padding-top:0"><div class="wrap"><div class="head"><div><p class="kick" data-reveal>'+T('r_k')+'</p><h2 data-reveal>'+T('r_h1')+' <span class="anton">'+T('r_h2')+'</span></h2><p class="sub" data-reveal>'+T('r_p')+'</p></div><a class="btn light" href="#resources" data-reveal>'+T('all')+'</a></div><div class="agrid">'+(as.length?as.map(artCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div><p class="disc" data-reveal>'+T('disc')+'</p></div></section>';
+  h+='<section class="mission"><div class="wrap"><div data-reveal>'+((((S.settings.pages||{}).mission||{}).images||[])[0]?'<img src="'+imgSrc(S.settings.pages.mission.images[0])+'" alt="" style="border-radius:28px">':'<img src="img/classroom.webp" alt="">')+'</div><div><p class="kick" data-reveal>'+T('m_k')+'</p><h2 data-reveal>'+esc(PG('mission','h1','m_h1'))+' <span class="anton">'+esc(PG('mission','h2','m_h2'))+'</span></h2><p class="sub" data-reveal>'+esc(PG('mission','p','m_p'))+'</p><form class="f" id="suggest" data-reveal><textarea name="text" placeholder="'+esc(T('m_ph'))+'" required></textarea><input name="email" type="email" placeholder="'+esc(T('m_em'))+'"><button class="btn" type="submit">'+T('m_btn')+'</button></form><p class="ok" id="ok1">'+T('m_ok')+'</p></div></div></section>';
+  h+=supportBlock()+footer();
+  return h;
+}
+function supportBlock(){ var s=S.settings; return '<section class="support" id="support-home" style="padding-top:0"><div class="wrap"><div class="box2"><span class="big anton">ACADI</span><div><p class="kick" data-reveal>'+T('su_k')+'</p><h2 data-reveal>'+esc(PG('support','h','su_h'))+'</h2><p class="sub" data-reveal>'+esc(PG('support','p','su_p'))+'</p><div class="ways" data-reveal><a class="btn" href="'+esc(s.whish||'#support')+'" '+(s.whish?'target="_blank" rel="noopener"':'')+'>'+T('su_w')+'</a><a class="btn light" href="'+esc(s.bmac||'#support')+'" '+(s.bmac?'target="_blank" rel="noopener"':'')+'>'+T('su_b')+'</a></div><p class="quiet" data-reveal>'+esc(PG('support','q','su_q'))+'</p></div><div class="kidf" data-reveal><img src="img/s4_3.webp" alt=""></div></div></div></section>' }
+
+var filterCat='';
+function pageClassroom(){
+  var ls=published(S.lessons); var cats=[]; ls.forEach(function(l){ if(l.cat&&cats.indexOf(l.cat)<0) cats.push(l.cat) });
+  var shown=filterCat?ls.filter(function(l){return l.cat===filterCat}):ls;
+  return banner(T('n_class'),T('n_class'),'s6_3','lavender',T('c_h2').split(' ')[0])+'<section><div class="wrap"><p class="sub">'+T('c_p')+'</p><div class="topics"><button class="'+(filterCat?'':'on')+'" data-cat="">'+T('filter_all')+'</button>'+cats.map(function(c){return '<button class="'+(filterCat===c?'on':'')+'" data-cat="'+c+'">'+esc(catName(c))+'</button>'}).join('')+'</div><div class="grid3">'+(shown.length?shown.map(lessonCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div></div></section>'+footer();
+}
+function pagePrintables(){ var ps=published(S.printables); var cats=[]; ps.forEach(function(l){ if(l.cat&&cats.indexOf(l.cat)<0) cats.push(l.cat) }); var shown=filterCat?ps.filter(function(l){return l.cat===filterCat}):ps;
+  return banner(T('n_print'),T('n_print'),'s5_3','mint',T('pr_h1').split(' ')[0])+'<section><div class="wrap"><p class="sub">'+T('pr_p')+'</p><div class="topics"><button class="'+(filterCat?'':'on')+'" data-cat="">'+T('filter_all')+'</button>'+cats.map(function(c){return '<button class="'+(filterCat===c?'on':'')+'" data-cat="'+c+'">'+esc(catName(c))+'</button>'}).join('')+'</div><div class="pgrid">'+(shown.length?shown.map(printCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div><p class="disc">'+T('su_q')+'</p></div></section>'+footer() }
+function pageResources(){ var as=published(S.articles); return banner(T('n_res'),T('n_res'),'s4_2','sky',T('r_h1').split(' ')[0])+'<section><div class="wrap"><p class="sub">'+T('r_p')+'</p><div class="agrid">'+(as.length?as.map(artCard).join(''):'<div class="empty">'+T('nothing')+'</div>')+'</div><p class="disc">'+T('disc')+'</p></div></section>'+footer() }
+
+function mediaBlock(x){ var h=''; if(x.videoAsset) h+='<div class="media"><video controls playsinline preload="metadata" src="'+imgSrc(x.videoAsset)+'"></video></div>'; else if(x.videoUrl) h+='<p style="margin-bottom:20px"><a class="btn" href="'+esc(x.videoUrl)+'" target="_blank" rel="noopener">▶ '+T('watch')+'</a></p>'; if(x.images&&x.images.length) h+='<div class="gallery">'+x.images.map(function(i){return '<img src="'+imgSrc(i)+'" alt="">'}).join('')+'</div>'; return h }
+function paras(t){ return t?t.split(/\n{2,}/).map(function(p){ if(/^#{1,3}\s/.test(p)) return '<h3>'+esc(p.replace(/^#+\s/,''))+'</h3>'; if(/^[-•]\s/m.test(p)) return '<ul>'+p.split('\n').map(function(l){return '<li>'+esc(l.replace(/^[-•]\s/,''))+'</li>'}).join('')+'</ul>'; return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>' }).join(''):'' }
+function asideBlock(x){ var h='<div class="aside">'; var rows=''; if(x.cat) rows+='<div class="row"><span>'+T('cat')+'</span><b>'+esc(catName(x.cat))+'</b></div>'; if(x.ages) rows+='<div class="row"><span>'+T('age')+'</span><b>'+esc(x.ages)+'</b></div>'; if(x.duration) rows+='<div class="row"><span>'+T('dur')+'</span><b>'+esc(x.duration)+'</b></div>'; if(rows) h+='<div class="box">'+rows+'</div>';
+  if(x.files&&x.files.length) h+='<div class="box"><h4>'+T('materials')+'</h4>'+x.files.map(function(f){return '<a class="file" href="'+imgSrc(f.id||f)+'" target="_blank" rel="noopener">⬇ '+esc(f.name||'PDF')+'</a>'}).join('')+'</div>';
+  if(x.links&&x.links.length) h+='<div class="box"><h4>'+T('links')+'</h4>'+x.links.map(function(l){return '<a class="file" href="'+esc(l.u)+'" '+(/^#/.test(l.u)?'':'target="_blank" rel="noopener"')+'>↗ '+esc(l.t||l.u)+'</a>'}).join('')+'</div>';
+  if(x.source||x.sourceUrl) h+='<div class="box"><h4>'+T('sources')+'</h4><a class="file" href="'+esc(x.sourceUrl||'#')+'" target="_blank" rel="noopener">↗ '+esc(x.source||x.sourceUrl)+'</a></div>';
+  if(L(x,'sources')) h+='<div class="box"><h4>'+T('sources')+'</h4><p style="font-size:13px;font-weight:600;color:var(--muted)">'+esc(L(x,'sources'))+'</p></div>';
+  return h+'</div>' }
+function pageLesson(id){ var l=S.lessons.filter(function(x){return x.id===id})[0]; if(!l) return pageClassroom(); var c=l.color||'lavender';
+  var steps=L(l,'steps'); var h=banner(T('n_class'),L(l,'title'),l.kid,c,catName(l.cat))+'<section style="padding-top:30px"><div class="wrap"><a class="btn light sm" href="#classroom">'+T('back')+'</a><div class="detail"><div>'+mediaBlock(l)+'<div class="body"><p style="font-size:19px;font-weight:600;color:var(--ink)">'+esc(L(l,'summary'))+'</p>'+(L(l,'why')?'<h3>'+T('why')+'</h3>'+rich(L(l,'why')):'')+(steps?'<h3>'+T('howto')+'</h3><div class="stepper">'+steps.split('\n').filter(Boolean).map(function(s){return '<div>'+esc(s)+'</div>'}).join('')+'</div>':'')+rich(L(l,'body'))+'</div></div>'+asideBlock(l)+'</div></div></section>';
+  var rel=published(S.lessons).filter(function(x){return x.id!==id}).slice(0,3); if(rel.length) h+='<section style="padding-top:0"><div class="wrap"><p class="kick">'+T('related')+'</p><div class="grid3">'+rel.map(lessonCard).join('')+'</div></div></section>'; return h+footer() }
+function pageArticle(id){ var a=S.articles.filter(function(x){return x.id===id})[0]; if(!a) return pageResources();
+  var h=banner(T('n_res'),L(a,'title'),'','sky',catName(a.cat))+'<section style="padding-top:30px"><div class="wrap"><a class="btn light sm" href="#resources">'+T('back')+'</a><div class="detail"><div>'+mediaBlock(a)+'<div class="body"><p style="font-size:19px;font-weight:600;color:var(--ink)">'+esc(L(a,'summary'))+'</p>'+(L(a,'body')?rich(L(a,'body')):'<p class="empty">'+T('nothing')+'</p>')+'</div><p class="disc">'+T('disc')+'</p></div>'+asideBlock(a)+'</div></div></section>'; return h+footer() }
+function pageAbout(){ var ab=(S.settings.pages||{}).about||{}; var ms=(S.settings.pages||{}).mission||{}; var media=mediaBlock(ab);
+  return banner(T('n_about'),PG('about','title','about_h'),ab.kid||'s4_3','blush','ACADI')+'<section><div class="wrap"><div class="welcome" style="padding:0"><div class="wrap" style="width:100%"><div>'+(ab.body_en||ab['body_'+lang]?'<div class="body">'+rich(L(ab,'body'))+'</div>':'<p class="sub" style="font-size:19px">'+T('about_p')+'</p><p class="sub" style="margin-top:16px">'+T('m_p')+'</p>')+'<p class="disc">'+T('disc')+'</p></div><div class="pillars">'+pillarsHtml(false)+'</div></div></div>'+(media?'<div style="margin-top:40px">'+media+'</div>':'')+'</div></section><section class="mission" style="padding-top:0"><div class="wrap"><div>'+(ms.images&&ms.images[0]?'<img src="'+imgSrc(ms.images[0])+'" alt="" style="border-radius:28px">':'<img src="img/classroom.webp" alt="">')+'</div><div><p class="kick">'+T('m_k')+'</p><h2>'+esc(PG('mission','h1','m_h1'))+' <span class="anton">'+esc(PG('mission','h2','m_h2'))+'</span></h2><p class="sub">'+esc(PG('mission','p','m_p'))+'</p><form class="f" id="suggest"><textarea name="text" placeholder="'+esc(T('m_ph'))+'" required></textarea><input name="email" type="email" placeholder="'+esc(T('m_em'))+'"><button class="btn" type="submit">'+T('m_btn')+'</button></form><p class="ok" id="ok1">'+T('m_ok')+'</p></div></div></section>'+footer() }
+function pageSupport(){ return banner(T('n_sup'),T('su_h'),'s4_3','lavender','ACADI')+supportBlock().replace('style="padding-top:0"','')+footer() }
+function productCard(p){ var th=p.images&&p.images[0]; return '<a class="pcard" href="#product/'+esc(p.id)+'" data-reveal><div class="pimg">'+(th?'<img src="'+imgSrc(th)+'" alt="">':'<img src="img/s7_3.webp" alt="" style="object-fit:contain;padding:10px">')+(p.discountType&&p.discountValue?'<span class="badge">'+(p.discountType==='percent'?'-'+p.discountValue+'%':'-'+money(p.discountValue,p.currency))+'</span>':'')+'</div><div class="pbody"><span class="cat">'+esc(catName(p.cat))+'</span><h3>'+esc(L(p,'title'))+'</h3><p>'+esc(L(p,'summary'))+'</p><div class="prow">'+priceTag(p)+'</div>'+(p.stock!==''&&p.stock!=null&&Number(p.stock)<=0?'<span class="chip">Out of stock</span>':'')+'</div></a>' }
+function pageShop(){ var ps=published(S.products); return banner(T('n_shop'),T('shop_h'),'s5_2','sun',T('n_shop'))+'<section><div class="wrap"><div class="soonbox"><div><span class="tag">'+T('soon')+'</span><h2 style="margin-top:14px">'+T('shop_h')+'</h2><p class="sub">'+T('shop_p')+'</p><ul>'+T('shop_l').map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></div><div style="position:relative;height:300px"><img src="img/s7_3.webp" alt="" style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);height:340px;filter:drop-shadow(0 24px 30px rgba(58,26,64,.25))"></div></div>'+(ps.length?'<div class="pgrid2">'+ps.map(productCard).join('')+'</div>':'')+'</div></section>'+footer() }
+function pageProduct(id){ var p=S.products.filter(function(x){return x.id===id})[0]; if(!p) return pageShop(); var imgs=p.images||[]; var fp=finalPrice(p);
+  return banner(T('n_shop'),L(p,'title'),'', 'sun',catName(p.cat))+'<section style="padding-top:30px"><div class="wrap"><a class="btn light sm" href="#shop">'+T('back')+'</a><div class="detail" style="grid-template-columns:1fr 1fr"><div>'+(imgs.length?'<div class="pmain"><img id="pmain" src="'+imgSrc(imgs[0])+'" alt=""></div><div class="gallery" id="pthumbs">'+imgs.map(function(i){return '<img src="'+imgSrc(i)+'" alt="" data-big="'+imgSrc(i)+'">'}).join('')+'</div>':'<div class="pmain"><img src="img/s7_3.webp" alt="" style="object-fit:contain"></div>')+(p.videoAsset?'<div class="media"><video controls playsinline src="'+imgSrc(p.videoAsset)+'"></video></div>':'')+'</div><div><span class="cat" style="color:var(--plum);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase">'+esc(catName(p.cat))+'</span><h2 style="margin:8px 0 10px;max-width:none">'+esc(L(p,'title'))+'</h2><div class="prow big">'+priceTag(p)+'</div><p class="sub" style="margin-top:10px">'+esc(L(p,'summary'))+'</p>'+(p.sku?'<p style="font-size:12px;color:var(--muted);font-weight:700;margin-top:6px">SKU '+esc(p.sku)+'</p>':'')+'<div class="acts"><button class="btn" disabled style="opacity:.8">'+T('soon')+' · '+T('n_shop')+'</button><a class="btn light" href="#collaborate">'+(lang==='ar'?'أعلمني عند الإطلاق':lang==='fr'?'Prévenez-moi':'Notify me at launch')+'</a></div><div class="body" style="margin-top:26px">'+rich(L(p,'body'))+'</div>'+asideBlock(p)+'</div></div></div></section>'+footer() }
+function pageCollaborate(){ var cs=published(S.collaborators);
+  return banner(T('n_col'),T('col_h'),'s4_3','mint',T('n_col'))+'<section><div class="wrap"><div class="soonbox"><div><span class="tag">'+T('soon')+'</span><h2 style="margin-top:14px">'+T('col_h')+'</h2><p class="sub">'+T('col_p')+'</p><ul>'+T('col_l').map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></div><div><h3 style="font-size:20px;font-weight:800">'+T('col_form')+'</h3><form class="f" id="apply"><input name="name" placeholder="'+esc(T('f_name'))+'" required><input name="org" placeholder="'+esc(T('f_org'))+'"><input name="role" placeholder="'+esc(T('f_role'))+'" required><input name="city" placeholder="'+esc(T('f_city'))+'"><input name="email" type="email" placeholder="'+esc(T('f_email'))+'" required><input name="phone" placeholder="'+esc(T('f_phone'))+'"><textarea name="about" placeholder="'+esc(T('f_about'))+'"></textarea><button class="btn" type="submit">'+T('f_send')+'</button></form><p class="ok" id="ok2">'+T('col_ok')+'</p></div></div>'+(cs.length?'<h2 style="margin-top:50px">'+T('pros_h')+'</h2><div class="pros">'+cs.map(function(c){return '<div class="pro"><span class="av">'+(c.images&&c.images[0]?'<img src="'+imgSrc(c.images[0])+'" alt="">':esc((c.name||'?').slice(0,2).toUpperCase()))+'</span><div><b>'+esc(c.name)+'</b><span>'+esc(c.role||'')+(c.org?' · '+esc(c.org):'')+'</span>'+(L(c,'summary')?'<span style="display:block;margin-top:4px">'+esc(L(c,'summary'))+'</span>':'')+'</div></div>'}).join('')+'</div>':'')+'</div></section>'+footer() }
+
+
+
+
+/* ---------------- pricing ---------------- */
+function money(v,cur){ v=Number(v); if(isNaN(v)) return ''; cur=cur||'USD'; var sym={USD:'$',CAD:'CA$',EUR:'€',LBP:'LBP '}[cur]||cur+' '; return cur==='LBP'?sym+Math.round(v).toLocaleString():sym+v.toFixed(2) }
+function finalPrice(p){ var base=Number(p.price)||0, dv=Number(p.discountValue)||0; if(p.discountType==='percent') return Math.max(0,base*(1-dv/100)); if(p.discountType==='amount') return Math.max(0,base-dv); return base }
+function marginText(p){ var fp=finalPrice(p), cost=Number(p.cost)||0; if(!p.price) return 'Enter a price to see the margin.'; var m=fp-cost, pct=fp?Math.round(m/fp*100):0; return 'Customer pays <b>'+money(fp,p.currency)+'</b>'+(p.discountType&&p.discountValue?' (was '+money(p.price,p.currency)+')':'')+(cost?' · margin <b>'+money(m,p.currency)+'</b> ('+pct+'%)':' · add your cost to see margin') }
+function priceTag(p){ var fp=finalPrice(p); if(!p.price) return '<span class="dl">'+T('soon')+'</span>'; var h='<span class="price">'+money(fp,p.currency)+'</span>'; var was=(p.discountType&&p.discountValue)?Number(p.price):(Number(p.compareAt)||0); if(was&&was>fp) h+=' <s class="was">'+money(was,p.currency)+'</s>'; if(p.discountType==='percent'&&p.discountValue) h+=' <span class="off">-'+p.discountValue+'%</span>'; else if(p.discountType==='amount'&&p.discountValue) h+=' <span class="off">-'+money(p.discountValue,p.currency)+'</span>'; return h }
+
+/* ---------------- HTML sanitiser (for admin-authored rich text) ---------------- */
+function clean(html){ if(!html) return ''; var d=document.createElement('div'); d.innerHTML=html; var walk=function(n){ [].slice.call(n.children).forEach(function(c){ var tag=c.tagName.toLowerCase(); if(['script','iframe','object','embed','style','link','meta','form','input','button'].indexOf(tag)>-1){ c.remove(); return } [].slice.call(c.attributes).forEach(function(a){ var nm=a.name.toLowerCase(), v=String(a.value); if(nm.indexOf('on')===0||(nm==='href'||nm==='src')&&/^\s*javascript:/i.test(v)) c.removeAttribute(a.name); if(nm==='style'&&!/^[a-z\-]+:\s*[#\w\s,.%()'"-]+;?(\s*[a-z\-]+:\s*[#\w\s,.%()'"-]+;?)*$/i.test(v)) c.removeAttribute('style') }); if(tag==='a'){ c.setAttribute('rel','noopener'); if(!/^#/.test(c.getAttribute('href')||'')) c.setAttribute('target','_blank') } walk(c) }) }; walk(d); return d.innerHTML }
+function isHtml(t){ return /<\w+[^>]*>/.test(t||'') }
+function rich(t){ return isHtml(t)?clean(t):paras(t) }
+
+/* ---------------- rich text editor ---------------- */
+function rte(name,val){ return '<div class="rte" data-rte="'+name+'"><div class="bar">'
+ +'<select data-cmd="formatBlock"><option value="p">Paragraph</option><option value="h2">Heading 1</option><option value="h3">Heading 2</option><option value="h4">Heading 3</option><option value="blockquote">Quote</option></select>'
+ +'<select data-cmd="fontName"><option value="">Font</option><option value="Inter">Inter</option><option value="Anton">Anton</option><option value="IBM Plex Sans Arabic">Plex Arabic</option><option value="Georgia">Georgia</option><option value="Arial">Arial</option></select>'
+ +'<select data-cmd="fontSize"><option value="">Size</option><option value="2">Small</option><option value="3">Normal</option><option value="4">Large</option><option value="5">X-Large</option><option value="6">Huge</option></select>'
+ +'<button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><button type="button" data-cmd="strikeThrough"><s>S</s></button>'
+ +'<input type="color" data-cmd="foreColor" value="#2B1B33" title="Text colour"><input type="color" data-cmd="hiliteColor" value="#FFF1D6" title="Highlight">'
+ +'<button type="button" data-cmd="insertUnorderedList">• List</button><button type="button" data-cmd="insertOrderedList">1. List</button>'
+ +'<button type="button" data-cmd="justifyLeft">⇤</button><button type="button" data-cmd="justifyCenter">↔</button><button type="button" data-cmd="justifyRight">⇥</button>'
+ +'<button type="button" data-cmd="link">🔗 Link</button><button type="button" data-cmd="image">🖼 Photo</button><button type="button" data-cmd="video">🎬 Video</button><button type="button" data-cmd="removeFormat">Clear</button>'
+ +'<input type="file" accept="image/*" data-rte-img hidden><input type="file" accept="video/*" data-rte-vid hidden>'
+ +'</div><div class="ed" contenteditable="true" data-name="'+name+'">'+(isHtml(val)?clean(val):paras(val))+'</div></div>' }
+function bindRte(root){
+  $$('.rte',root).forEach(function(box){ if(box._b) return; box._b=1; var ed=$('.ed',box); var savedRange=null;
+    ed.addEventListener('keyup',function(){ var s=getSelection(); if(s.rangeCount) savedRange=s.getRangeAt(0) }); ed.addEventListener('mouseup',function(){ var s=getSelection(); if(s.rangeCount) savedRange=s.getRangeAt(0) });
+    function restore(){ ed.focus(); if(savedRange){ var s=getSelection(); s.removeAllRanges(); s.addRange(savedRange) } }
+    $('.bar',box).addEventListener('mousedown',function(e){ if(e.target.tagName==='BUTTON') e.preventDefault() });
+    $('.bar',box).addEventListener('click',async function(e){ var b=e.target.closest('button'); if(!b) return; var c=b.dataset.cmd; restore();
+      if(c==='link'){ var u=prompt('Link URL (https://…)'); if(u) document.execCommand('createLink',false,u); return }
+      if(c==='image'){ $('[data-rte-img]',box).click(); return } if(c==='video'){ $('[data-rte-vid]',box).click(); return }
+      document.execCommand(c,false,null) });
+    $$('.bar select',box).forEach(function(sel){ sel.addEventListener('change',function(){ restore(); if(sel.value) document.execCommand(sel.dataset.cmd,false,sel.value); sel.selectedIndex=0 }) });
+    $$('.bar input[type=color]',box).forEach(function(inp){ inp.addEventListener('input',function(){ restore(); document.execCommand(inp.dataset.cmd,false,inp.value) }) });
+    $('[data-rte-img]',box).addEventListener('change',async function(){ var f=this.files[0]; if(!f) return; if(!assets){ toast('Uploads unavailable'); return } toast('Uploading…'); try{ var r=await assets.upload(f); restore(); document.execCommand('insertHTML',false,'<img src="'+imgSrc(r.id)+'" alt="">'); toast('Photo inserted') }catch(err){ toast('Upload failed') } this.value='' });
+    $('[data-rte-vid]',box).addEventListener('change',async function(){ var f=this.files[0]; if(!f) return; if(!assets){ toast('Uploads unavailable'); return } toast('Uploading…'); try{ var r=await assets.upload(f); restore(); document.execCommand('insertHTML',false,'<video controls playsinline src="'+imgSrc(r.id)+'"></video><p></p>'); toast('Video inserted') }catch(err){ toast('Upload failed') } this.value='' });
+  });
+}
+
+/* inbox writes: one doc per signed-in person (rules: applications/{self}); otherwise fall back to WhatsApp/email */
+async function inboxWrite(coll,doc){ if(!db||!user||!user.id) return false; try{ var uid=await user.id(); var ref=db.collection(coll).doc(uid); var prev=await ref.get().catch(function(){return null}); var items=(prev&&prev.exists&&prev.data()&&prev.data().items)||[]; items.push(doc); await ref.set({items:items,at:Date.now()}); return true }catch(e){ console.warn('inbox',e); return false } }
+function fallbackSend(subject,doc){ var s=S.settings; var text=subject+'\n'+Object.keys(doc).filter(function(k){return k!=='at'&&k!=='lang'&&doc[k]}).map(function(k){return k+': '+doc[k]}).join('\n'); var box=$('#ok1')||$('#ok2'); var links=''; if(s.whatsapp) links+=' <a class="btn sm" style="margin-inline-start:8px" href="https://wa.me/'+s.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(text)+'" target="_blank" rel="noopener">WhatsApp</a>'; if(s.email) links+=' <a class="btn light sm" style="margin-inline-start:8px" href="mailto:'+s.email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(text)+'">Email</a>'; if(box&&links) box.innerHTML+='<br><span style="font-weight:600;color:var(--muted);font-size:13px">'+(lang==='ar'?'لإرسالها مباشرة:':lang==='fr'?'Pour l\'envoyer directement :':'To send it directly:')+'</span>'+links }
+
+/* ---------------- render ---------------- */
+function render(){
+  var r=route(); renderNav(); var m=$('#main'); if(G) ScrollTrigger.getAll().forEach(function(t){t.kill()});
+  if(r.page!=='classroom'&&r.page!=='printables') filterCat='';
+  var html = r.page==='home'?pageHome(): r.page==='classroom'?pageClassroom(): r.page==='lesson'?pageLesson(r.id): r.page==='printables'?pagePrintables(): r.page==='resources'?pageResources(): r.page==='article'?pageArticle(r.id): r.page==='about'?pageAbout(): r.page==='support'?pageSupport(): r.page==='shop'?pageShop(): r.page==='product'?pageProduct(r.id): r.page==='collaborate'?pageCollaborate(): r.page==='admin'?pageAdmin(): pageHome();
+  m.innerHTML=html;
+  if(r.page==='home') initHero();
+  if(r.page==='admin'){ bindAdmin(); bindRte($('#amain')) }
+  $$('#pthumbs img').forEach(function(t){ t.addEventListener('click',function(){ $('#pmain').src=t.dataset.big }) });
+  $$('.topics button[data-cat]').forEach(function(b){ b.addEventListener('click',function(){ filterCat=b.dataset.cat; render() }) });
+  var sg=$('#suggest'); if(sg) sg.addEventListener('submit',async function(e){ e.preventDefault(); var fd=new FormData(sg); var doc={text:fd.get('text'),email:fd.get('email')||'',lang:lang,at:Date.now()}; var saved=await inboxWrite('suggestions',doc); sg.style.display='none'; $('#ok1').style.display='block'; if(!saved) fallbackSend('ACADI topic suggestion', doc) });
+  var ap=$('#apply'); if(ap) ap.addEventListener('submit',async function(e){ e.preventDefault(); var fd=new FormData(ap); var doc={}; ['name','org','role','city','email','phone','about'].forEach(function(k){doc[k]=fd.get(k)||''}); doc.at=Date.now(); doc.lang=lang; var saved=await inboxWrite('applications',doc); ap.style.display='none'; $('#ok2').style.display='block'; if(!saved) fallbackSend('ACADI collaboration request', doc) });
+  if(G&&!reduce){ motion(r) }
+  else $$('[data-reveal]').forEach(function(el){el.style.opacity=1;el.style.transform='none'});
+}
+
+
+/* ---------------- page motion ---------------- */
+function motion(r){
+  // grids: staggered children; singles: simple reveal
+  var grids=['.grid3','.pgrid','.pgrid2','.hgrid','.agrid','.pillars','.pros','.lessons'];
+  var done=new Set();
+  grids.forEach(function(sel){ $$(sel).forEach(function(g){ var kids=[].slice.call(g.children).filter(function(k){return k.hasAttribute('data-reveal')||true}); if(!kids.length) return; kids.forEach(function(k){done.add(k)}); gsap.set(kids,{opacity:0,y:40}); gsap.to(kids,{opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.08,scrollTrigger:{trigger:g,start:'top 85%'}}) }) });
+  $$('[data-reveal]').forEach(function(el){ if(done.has(el)) return; gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}}) });
+  // headings: slide up from a clipped line
+  $$('section h2, .banner h1').forEach(function(h){ if(h.closest('.hero')) return; gsap.from(h,{y:30,opacity:0,duration:1,ease:'power4.out',scrollTrigger:{trigger:h,start:'top 92%'}}) });
+  // card characters pop & float
+  $$('.lesson img.kid-img, .help img, .card img').forEach(function(im,i){ gsap.from(im,{yPercent:25,opacity:0,duration:1,ease:'expo.out',delay:(i%3)*.06,scrollTrigger:{trigger:im.parentElement,start:'top 85%'}}); gsap.to(im,{y:-6,duration:2.4+(i%3)*.4,yoyo:true,repeat:-1,ease:'sine.inOut'}) });
+  // banner parallax + float
+  var bw=$('.banner .bw'), bk=$('.banner .bart img'); if(bw) gsap.to(bw,{yPercent:30,ease:'none',scrollTrigger:{trigger:'.banner',start:'top top',end:'bottom top',scrub:true}}); if(bk){ gsap.from(bk,{yPercent:20,opacity:0,duration:1.1,ease:'expo.out'}); gsap.to(bk,{y:-8,duration:2.8,yoyo:true,repeat:-1,ease:'sine.inOut'}) }
+  // mission image & support kid
+  $$('.mission img').forEach(function(im){ gsap.from(im,{scale:.92,opacity:0,duration:1.2,ease:'expo.out',scrollTrigger:{trigger:im,start:'top 80%'}}) });
+  var sk=$('.kidf img'); if(sk){ gsap.from(sk,{yPercent:20,opacity:0,duration:1,ease:'expo.out',scrollTrigger:{trigger:'.box2',start:'top 75%'}}); gsap.to(sk,{y:-6,duration:2.6,yoyo:true,repeat:-1,ease:'sine.inOut'}) }
+  var big=$('.box2 .big'); if(big) gsap.to(big,{xPercent:-10,ease:'none',scrollTrigger:{trigger:'.box2',start:'top bottom',end:'bottom top',scrub:true}});
+  // helps block: dark panel slides in
+  var hp=$('.helps'); if(hp) gsap.from(hp,{y:60,opacity:0,borderRadius:'60px',duration:1,ease:'power3.out',scrollTrigger:{trigger:hp,start:'top 85%'}});
+  // ticker
+  var row=$('#ticker'); if(row){ row.innerHTML+=row.innerHTML; gsap.to(row,{xPercent:-50,duration:28,repeat:-1,ease:'none'}) }
+  // magnetic buttons (desktop)
+  if(matchMedia('(pointer:fine)').matches){ $$('.btn, .arrow').forEach(function(b){ b.addEventListener('pointermove',function(e){ var r=b.getBoundingClientRect(); gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.18,y:(e.clientY-r.top-r.height/2)*.18,duration:.4,ease:'power2.out'}) }); b.addEventListener('pointerleave',function(){ gsap.to(b,{x:0,y:0,duration:.6,ease:'elastic.out(1,.5)'}) }) }) }
+  ScrollTrigger.refresh();
+}
+
+/* ---------------- hero carousel ---------------- */
+var cur=0,busy=false;
+function fitWord(){ var w=$('#word'); if(!w) return; var txt=w.textContent||''; var stage=$('.hero .stage'); var avail=Math.min(stage.clientWidth, window.innerWidth)*0.96; var per=lang==='ar'?0.62:0.52; var fs=Math.min(avail/Math.max(txt.length*per,1), window.innerWidth<900?170:300); w.style.fontSize=Math.max(fs,56)+'px' }
+function splitWord(txt){ var w=$('#word'); w.innerHTML=''; if(lang==='ar'){ var s=document.createElement('span'); s.textContent=txt; w.appendChild(s) } else txt.split('').forEach(function(ch){ var s=document.createElement('span'); s.textContent=ch; w.appendChild(s) }); fitWord(); return w.children }
+function setSlide(i){ clearTimeout(window._wordGuard); window._wordGuard=setTimeout(function(){ var w=$('#word'); if(w) [].slice.call(w.children).forEach(function(c){ if(getComputedStyle(c).opacity==='0') c.style.opacity='1' }) },1600); var s=S.settings.slides[i]; $('#cN').textContent=L(s,'n'); $('#cH').textContent=L(s,'h'); $('#cP').textContent=L(s,'p'); $('#kidM img').src=imgSrc(s.main); $('#kidL img').src=imgSrc(s.l); $('#kidR img').src=imgSrc(s.r); var hero=$('.hero'); hero.style.background=s.bg; $('#word').style.setProperty('--wc',deep(s.bg)); splitWord(L(s,'word')); $$('.tab').forEach(function(t,k){t.classList.toggle('on',k===i)}) }
+function go(i,dir){ var n=S.settings.slides.length; if(busy||!n) return; i=(i+n)%n; if(i===cur) return; dir=dir||(i>cur?1:-1); if(lang==='ar') dir=-dir; cur=i; var s=S.settings.slides[i];
+  if(!G||reduce){ setSlide(i); return } busy=true; var word=$('#word'),kidM=$('#kidM'),kidL=$('#kidL'),kidR=$('#kidR');
+  $$('.tab').forEach(function(t,k){t.classList.toggle('on',k===i)}); $('.hero').style.background=s.bg;
+  gsap.timeline({defaults:{ease:'power3.inOut'},onComplete:function(){busy=false}})
+   .to(kidM,{xPercent:-50-dir*18,scale:.86,opacity:0,filter:'blur(6px)',duration:.55},0)
+   .to([kidL,kidR],{xPercent:-50-dir*10,opacity:0,duration:.45},0)
+   .to(word.children,{yPercent:40,opacity:0,duration:.4,stagger:{each:.03,from:dir>0?'start':'end'}},0)
+   .to('#copy > *',{y:14,opacity:0,duration:.35,stagger:.04},0)
+   .add(function(){ setSlide(i); var ltr=[].slice.call(word.children); gsap.set(ltr,{yPercent:-50,opacity:0}); gsap.to(ltr,{yPercent:0,opacity:1,duration:.6,ease:'power4.out',stagger:{each:.035,from:dir>0?'start':'end'}}); gsap.set(kidM,{xPercent:-50+dir*22,scale:1.08,opacity:0,filter:'blur(8px)'}); gsap.set([kidL,kidR],{xPercent:-50+dir*14,opacity:0}) })
+   .to(kidM,{xPercent:-50,scale:1,opacity:1,filter:'blur(0px)',duration:.9,ease:'expo.out'},'+=.05')
+   .to([kidL,kidR],{xPercent:-50,opacity:.55,duration:.8,ease:'expo.out'},'<.1')
+   .to('#copy > *',{y:0,opacity:1,duration:.6,ease:'power3.out',stagger:.05},'<.1') }
+function initHero(){ cur=0; setSlide(0); var hero=$('.hero'); if(G&&!reduce){ gsap.set($$('.kid'),{xPercent:-50,x:0,y:0,clearProps:'transform'}); gsap.set($$('.kid'),{xPercent:-50}) }
+  $('#next').addEventListener('click',function(){go(cur+1,1)}); $('#prev').addEventListener('click',function(){go(cur-1,-1)});
+  $$('.tab').forEach(function(t){t.addEventListener('click',function(){go(+t.dataset.i)})});
+  var sx=null; hero.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true}); hero.addEventListener('touchend',function(e){ if(sx===null) return; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) go(cur+(dx<0?1:-1),dx<0?1:-1); sx=null });
+  window.addEventListener('resize',fitWord);
+  if(!G||reduce) return; var word=$('#word'),kidM=$('#kidM'),kidL=$('#kidL'),kidR=$('#kidR');
+  var ltr0=[].slice.call(word.children); gsap.set(ltr0,{yPercent:-60,opacity:0});
+  gsap.timeline().to(ltr0,{yPercent:0,opacity:1,duration:.9,ease:'power4.out',stagger:.05},.1).from(kidM,{yPercent:30,scale:.9,opacity:0,duration:1.2,ease:'expo.out'},.2).from([kidL,kidR],{yPercent:20,opacity:0,duration:1,ease:'expo.out',stagger:.1},.5).from('#copy > *',{y:20,opacity:0,duration:.7,ease:'power3.out',stagger:.07},.6).from(['.arrows','.tabs'],{y:16,opacity:0,duration:.6,ease:'power3.out',stagger:.08},.9);
+  gsap.to(kidM.firstElementChild,{y:-10,duration:2.6,yoyo:true,repeat:-1,ease:'sine.inOut'}); gsap.to([kidL.firstElementChild,kidR.firstElementChild],{y:-6,duration:3.2,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:.6});
+  if(matchMedia('(pointer:fine)').matches) hero.addEventListener('pointermove',function(e){ var r=hero.getBoundingClientRect(),dx=(e.clientX-r.left)/r.width-.5,dy=(e.clientY-r.top)/r.height-.5; gsap.to(word,{x:dx*-30,y:dy*-14,duration:.8,ease:'power2.out'}); gsap.to([kidL,kidR],{x:dx*26,duration:.8,ease:'power2.out'}); gsap.to(kidM.firstElementChild,{rotation:dx*2,duration:.8,ease:'power2.out'}) });
+  gsap.to(word,{yPercent:40,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}}); gsap.to('#cast',{yPercent:10,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}});
+}
+document.addEventListener('keydown',function(e){ if(route().page!=='home') return; if(/INPUT|TEXTAREA/.test(e.target.tagName)) return; if(e.key==='ArrowRight') go(cur+1,1); if(e.key==='ArrowLeft') go(cur-1,-1) });
+
+/* ================= ADMIN ================= */
+var A={tab:'dashboard',edit:null,editLang:'en',draft:null};
+var COLL={lessons:{label:'Parent Classroom — lessons',fields:['title','summary','why','steps','body','sources'],extra:['cat','ages','duration','color','kid']},printables:{label:'Free Printables',fields:['title','summary','howto'],extra:['cat','ages','color']},articles:{label:'Parent Resources — articles',fields:['title','summary','body'],extra:['cat','source','sourceUrl']},products:{label:'Shop — products',fields:['title','summary','body'],extra:['price','compareAt','discountType','discountValue','cost','currency','stock','sku','cat']},collaborators:{label:'Collaborators',fields:['summary','body'],extra:['name','role','org','city','email']}};
+function pageAdmin(){
+  if(!isAdmin) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><div class="empty">'+(live?'This area is for the ACADI team (artifact editors) only.':T('signin'))+'</div></div></section>'+footer();
+  var side='<aside class="ad-side"><h4>Overview</h4>'+sb('dashboard','Dashboard')+'<h4>Content</h4>'+Object.keys(COLL).map(function(k){return sb(k,COLL[k].label,S[k].length)}).join('')+'<h4>Site</h4>'+sb('hero','Home carousel')+sb('helps','How ACADI helps')+sb('pages','Pages & texts')+sb('settings','Settings & donations')+'<h4>Inbox</h4>'+sb('applications','Collaboration requests',S.applications.length)+sb('suggestions','Topic suggestions',S.suggestions.length)+'</aside>';
+  return '<div class="admin">'+side+'<div class="amain" id="amain">'+adminMain()+'</div></div>';
+}
+function sb(k,l,c){ return '<button data-tab="'+k+'" class="'+(A.tab===k?'on':'')+'">'+l+(c!=null?'<span class="cnt">'+c+'</span>':'')+'</button>' }
+function adminMain(){
+  var t=A.tab;
+  if(t==='dashboard') return '<div class="toolbar"><h2>Dashboard</h2><a class="btn light sm" href="#home" target="_blank">Open public site ↗</a></div><div class="stats">'+['lessons','printables','articles','applications'].map(function(k){return '<div class="stat"><b>'+S[k].length+'</b><span>'+k+'</span></div>'}).join('')+'</div><div class="notice ok">You are signed in as an editor. Everything you publish here is live for visitors who are signed in to claude.ai; signed-out visitors see the built-in default content until the site moves to its own hosting.</div><div style="height:14px"></div><div class="notice">Videos: upload MP4/WebM files directly (up to 20 MB each) — they play inside the page. External video links (YouTube, Vimeo) open in a new tab because embeds are blocked here.</div>';
+  if(COLL[t]) return A.edit!=null?editor(t):listView(t);
+  if(t==='hero') return heroEditor();
+  if(t==='helps') return helpsEditor();
+  if(t==='settings') return settingsEditor();
+  if(t==='pages') return pagesEditor();
+  if(t==='applications') return inbox('applications',['name','role','org','city','email','phone','about']);
+  if(t==='suggestions') return inbox('suggestions',['text','email']);
+  return '';
+}
+function listView(k){ var list=S[k].slice().sort(function(a,b){return (a.order||99)-(b.order||99)});
+  return '<div class="toolbar"><h2>'+COLL[k].label+'</h2><button class="btn sm" data-act="new">+ New</button></div><div class="table"><div class="trow"><span></span><span>Title</span><span class="hide-m">Category</span><span>Status</span><span class="hide-m"></span></div>'+(list.length?list.map(function(x){ var th=(x.images&&x.images[0])||x.kid; return '<div class="trow"><img class="th" src="'+(th?imgSrc(th):'img/logo.webp')+'" alt=""><div><b>'+esc(x.title_en||x.name||x.id)+'</b><div style="font-size:12px;color:var(--muted)">'+esc(x.id)+' · order '+(x.order||'-')+'</div></div><span class="hide-m">'+esc(catName(x.cat))+'</span><span><span class="st '+(x.published!==false?'pub':'draft')+'">'+(x.published!==false?'Published':'Draft')+'</span></span><div class="ops hide-m"><button class="ibtn" data-act="edit" data-id="'+esc(x.id)+'">Edit</button><button class="ibtn" data-act="toggle" data-id="'+esc(x.id)+'">'+(x.published!==false?'Unpublish':'Publish')+'</button><button class="ibtn red" data-act="del" data-id="'+esc(x.id)+'">Delete</button></div></div>'}).join(''):'<div class="trow"><span></span><span style="color:var(--muted)">Nothing yet. Click + New.</span></div>')+'</div>' }
+function fld(label,name,val,type){ if(type==='rich') return '<div class="fld"><label>'+label+'</label>'+rte(name,val)+'</div>'; return '<div class="fld"><label>'+label+'</label>'+(type==='area'?'<textarea name="'+name+'" class="'+(/steps/.test(name)?'long':'')+'">'+esc(val||'')+'</textarea>':type==='select'?val:'<input name="'+name+'" value="'+esc(val||'')+'">')+'</div>' }
+function editor(k){ var d=A.draft; var c=COLL[k]; var isNew=A.edit==='__new__';
+  var langPanes=['en','ar','fr'].map(function(lg){ return '<div class="lp '+(A.editLang===lg?'on':'')+'" data-lp="'+lg+'">'+c.fields.map(function(f){ var label=f.toUpperCase()+' ('+lg+')'+(f==='steps'?' — one step per line':f==='body'?' — blank line = new paragraph, "- " = bullet, "## " = heading':''); return fld(label,f+'_'+lg,d[f+'_'+lg],/body|why|howto/.test(f)?'rich':/summary|steps|sources/.test(f)?'area':'') }).join('')+'</div>' }).join('');
+  var extra=c.extra.map(function(f){ if(f==='discountType') return fld('Discount type','discountType','<select name="discountType"><option value="" '+(!d.discountType?'selected':'')+'>No discount</option><option value="percent" '+(d.discountType==='percent'?'selected':'')+'>Percent %</option><option value="amount" '+(d.discountType==='amount'?'selected':'')+'>Amount $</option></select>','select'); if(f==='currency') return fld('Currency','currency','<select name="currency"><option value="USD" '+((d.currency||'USD')==='USD'?'selected':'')+'>USD $</option><option value="LBP" '+(d.currency==='LBP'?'selected':'')+'>LBP</option><option value="CAD" '+(d.currency==='CAD'?'selected':'')+'>CAD $</option><option value="EUR" '+(d.currency==='EUR'?'selected':'')+'>EUR €</option></select>','select'); if(f==='price') return fld('Selling price','price',d.price)+'<div class="notice" data-margin>'+marginText(d)+'</div>'; if(f==='compareAt') return fld('Compare-at price (shown crossed out)','compareAt',d.compareAt); if(f==='discountValue') return fld('Discount value (number)','discountValue',d.discountValue); if(f==='cost') return fld('Your cost per unit (for margin, private)','cost',d.cost); if(f==='stock') return fld('Stock quantity','stock',d.stock); if(f==='sku') return fld('SKU / code','sku',d.sku); if(f==='cat') return fld('Category','cat','<select name="cat">'+Object.keys(CATS).map(function(x){return '<option value="'+x+'" '+(d.cat===x?'selected':'')+'>'+CATS[x].en+'</option>'}).join('')+'</select>','select'); if(f==='color') return fld('Card colour','color','<select name="color">'+Object.keys(COLORS).map(function(x){return '<option value="'+x+'" '+(d.color===x?'selected':'')+'>'+x+'</option>'}).join('')+'</select>','select'); if(f==='kid') return '<div class="fld"><label>Character</label><div class="kids" data-kids>'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+(d.kid===x?'on':'')+'" alt="">'}).join('')+'</div></div>'; return fld(f.charAt(0).toUpperCase()+f.slice(1),f,d[f]) }).join('');
+  var media='<div class="fld"><label>Video — upload file</label><label class="up">'+(assets?'Click to upload MP4 / WebM (≤20 MB)':'Uploads unavailable')+'<input type="file" accept="video/*" data-up="videoAsset"></label>'+(d.videoAsset?'<div class="thumbs"><div class="ad-t"><video src="'+imgSrc(d.videoAsset)+'" muted></video><button data-rm="videoAsset">×</button></div></div>':'')+'</div>'
+   +fld('Video link (YouTube / Vimeo / Drive — opens in new tab)','videoUrl',d.videoUrl)
+   +'<div class="fld"><label>Photos</label><label class="up">'+(assets?'Click to upload images (multiple)':'Uploads unavailable')+'<input type="file" accept="image/*" multiple data-up="images"></label><div class="thumbs">'+(d.images||[]).map(function(i,n){return '<div class="ad-t"><img src="'+imgSrc(i)+'" alt=""><button data-rmi="images:'+n+'">×</button></div>'}).join('')+'</div></div>'
+   +'<div class="fld"><label>Files (PDF, printables)</label><label class="up">'+(assets?'Click to upload PDFs':'Uploads unavailable')+'<input type="file" accept=".pdf,application/pdf" multiple data-up="files"></label><div class="thumbs">'+(d.files||[]).map(function(f,n){return '<div class="ad-t">📄 '+esc((f.name||'PDF').slice(0,14))+'<button data-rmi="files:'+n+'">×</button></div>'}).join('')+'</div></div>'
+   +'<div class="fld"><label>Links (label + URL)</label><div class="links" data-links>'+((d.links||[]).concat([{t:'',u:''}])).map(function(l,n){return '<div class="lk"><input placeholder="Label" value="'+esc(l.t)+'" data-lt="'+n+'"><input placeholder="https://…" value="'+esc(l.u)+'" data-lu="'+n+'"><button class="ibtn red" data-rml="'+n+'">×</button></div>'}).join('')+'</div></div>';
+  return '<div class="toolbar"><h2>'+(isNew?'New ':'Edit ')+c.label.replace(/s \(.*|s$/,'')+'</h2><div style="display:flex;gap:8px"><button class="btn light sm" data-act="cancel">Cancel</button><button class="btn sm" data-act="save">Save</button></div></div><form class="editor" id="ef" onsubmit="return false">'
+   +'<div class="col">'+fld('ID (url slug, letters-dashes)','id',d.id)+'<div class="langtabs">'+['en','ar','fr'].map(function(lg){return '<button type="button" data-lt-tab="'+lg+'" class="'+(A.editLang===lg?'on':'')+'">'+lg.toUpperCase()+'</button>'}).join('')+'</div>'+langPanes+'</div>'
+   +'<div class="col">'+fld('Published (true/false)','published','<select name="published"><option value="true" '+(d.published!==false?'selected':'')+'>Published</option><option value="false" '+(d.published===false?'selected':'')+'>Draft</option></select>','select')+fld('Order (1 = first)','order',d.order)+extra+media+'</div></form>' }
+function heroEditor(){ var sl=S.settings.slides; return '<div class="toolbar"><h2>Home carousel</h2><div style="display:flex;gap:8px"><button class="btn light sm" data-act="slide-add">+ Slide</button><button class="btn sm" data-act="save-settings">Save</button></div></div><form id="ef" onsubmit="return false" style="display:grid;gap:16px">'+sl.map(function(s,i){ return '<div class="editor" data-slide="'+i+'"><div class="col"><b>Slide '+(i+1)+'</b>'+['en','ar','fr'].map(function(lg){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+fld('Big word ('+lg+')','word_'+lg,s['word_'+lg])+fld('Tab ('+lg+')','tab_'+lg,s['tab_'+lg])+fld('Small label ('+lg+')','n_'+lg,s['n_'+lg])+fld('Headline ('+lg+')','h_'+lg,s['h_'+lg])+'</div>'+fld('Text ('+lg+')','p_'+lg,s['p_'+lg],'area')}).join('')+'</div><div class="col">'+fld('Background colour (hex)','bg',s.bg)+'<div class="fld"><label>Main character</label><div class="kids" data-pick="main">'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+(s.main===x?'on':'')+'" alt="">'}).join('')+'</div></div><div class="fld"><label>Left character</label><div class="kids" data-pick="l">'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+(s.l===x?'on':'')+'" alt="">'}).join('')+'</div></div><div class="fld"><label>Right character</label><div class="kids" data-pick="r">'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+(s.r===x?'on':'')+'" alt="">'}).join('')+'</div></div><button class="ibtn red" data-act="slide-del" data-i="'+i+'">Delete slide</button></div></div>' }).join('')+'</form>' }
+function helpsEditor(){ return '<div class="toolbar"><h2>How ACADI helps (6 blocks)</h2><button class="btn sm" data-act="save-settings">Save</button></div><form id="ef" onsubmit="return false" style="display:grid;gap:16px">'+S.settings.helps.map(function(h,i){return '<div class="editor" data-help="'+i+'"><div class="col"><b>Block '+(i+1)+'</b>'+['en','ar','fr'].map(function(lg){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+fld('Title ('+lg+')','t_'+lg,h['t_'+lg])+fld('Text ('+lg+')','p_'+lg,h['p_'+lg])+'</div>'}).join('')+'</div><div class="col"><div class="fld"><label>Character</label><div class="kids" data-pick="kid">'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+(h.kid===x?'on':'')+'" alt="">'}).join('')+'</div></div></div></div>'}).join('')+'</form>' }
+function settingsEditor(){ var s=S.settings; return '<div class="toolbar"><h2>Settings & donations</h2><button class="btn sm" data-act="save-settings">Save</button></div><form id="ef" onsubmit="return false" class="editor"><div class="col">'+fld('Whish Money payment link','whish',s.whish)+fld('Buy Me a Coffee link','bmac',s.bmac)+fld('WhatsApp number (e.g. 96170123456)','whatsapp',s.whatsapp)+fld('Contact email','email',s.email)+'</div><div class="col"><div class="notice">Links are shown on the Support page and home. Leave empty to show the buttons without links.</div></div></form>' }
+
+function pgUp(label,key,accept,multi){ return '<div class="fld"><label>'+label+'</label><label class="up">'+(assets?'Click to upload':'Uploads unavailable')+'<input type="file" accept="'+accept+'" '+(multi?'multiple':'')+' data-pgup="'+key+'"></label><div class="thumbs" data-pgthumbs="'+key+'"></div></div>' }
+function pagesEditor(){ var P=S.settings.pages=S.settings.pages||{}; P.welcome=P.welcome||{pillars:[]}; P.about=P.about||{images:[]}; P.support=P.support||{}; P.mission=P.mission||{images:[]}; while((P.welcome.pillars||[]).length<4) P.welcome.pillars.push({});
+  var lg3=function(fn){ return ['en','ar','fr'].map(fn).join('') };
+  var html='<div class="toolbar"><h2>Pages & texts</h2><button class="btn sm" data-act="save-settings">Save all</button></div><form id="ef" onsubmit="return false" style="display:grid;gap:16px">';
+  html+='<div class="editor" data-pg="welcome"><div class="col"><b>Home — Welcome block</b>'+lg3(function(l){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+fld('Headline line 1 ('+l+')','h1_'+l,P.welcome['h1_'+l])+fld('Headline line 2 — big word ('+l+')','h2_'+l,P.welcome['h2_'+l])+'</div>'+fld('Paragraph ('+l+')','p_'+l,P.welcome['p_'+l],'area')})+'</div><div class="col"><div class="notice">Leave a field empty to keep the built-in text in that language.</div></div></div>';
+  P.welcome.pillars.forEach(function(pl,i){ html+='<div class="editor" data-pg="pillar'+i+'"><div class="col"><b>Welcome card '+(i+1)+'</b>'+lg3(function(l){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+fld('Title ('+l+')','t_'+l,pl['t_'+l])+fld('Text ('+l+')','s_'+l,pl['s_'+l])+'</div>'})+'</div><div class="col"><div class="fld"><label>Icon (PNG, transparent)</label><label class="up">'+(assets?'Click to upload icon':'Uploads unavailable')+'<input type="file" accept="image/*" data-pgup="pillar'+i+'.icon"></label><div class="thumbs">'+(pl.icon?'<div class="ad-t"><img src="'+imgSrc(pl.icon)+'" alt=""><button data-pgrm="pillar'+i+'.icon">×</button></div>':'')+'</div></div></div></div>' });
+  html+='<div class="editor" data-pg="about"><div class="col"><b>About ACADI page</b>'+lg3(function(l){return fld('Page title ('+l+')','title_'+l,P.about['title_'+l])+fld('Body ('+l+')','body_'+l,P.about['body_'+l],'rich')})+'</div><div class="col"><div class="fld"><label>Banner character</label><div class="kids" data-pick="aboutkid">'+KIDS.map(function(x){return '<img src="img/'+x+'.webp" data-kid="'+x+'" class="'+((P.about.kid||'s4_3')===x?'on':'')+'" alt="">'}).join('')+'</div></div><div class="fld"><label>Photos</label><label class="up">'+(assets?'Click to upload images':'Uploads unavailable')+'<input type="file" accept="image/*" multiple data-pgup="about.images"></label><div class="thumbs">'+(P.about.images||[]).map(function(im,n){return '<div class="ad-t"><img src="'+imgSrc(im)+'" alt=""><button data-pgrm="about.images:'+n+'">×</button></div>'}).join('')+'</div></div><div class="fld"><label>Video</label><label class="up">'+(assets?'Click to upload MP4':'Uploads unavailable')+'<input type="file" accept="video/*" data-pgup="about.videoAsset"></label>'+(P.about.videoAsset?'<div class="thumbs"><div class="ad-t"><video src="'+imgSrc(P.about.videoAsset)+'" muted></video><button data-pgrm="about.videoAsset">×</button></div></div>':'')+'</div>'+fld('Video link','about.videoUrl',P.about.videoUrl)+'</div></div>';
+  html+='<div class="editor" data-pg="mission"><div class="col"><b>Mission & community block</b>'+lg3(function(l){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+fld('Line 1 ('+l+')','h1_'+l,P.mission['h1_'+l])+fld('Big word ('+l+')','h2_'+l,P.mission['h2_'+l])+'</div>'+fld('Paragraph ('+l+')','p_'+l,P.mission['p_'+l],'area')})+'</div><div class="col"><div class="fld"><label>Photo (replaces the classroom illustration)</label><label class="up">'+(assets?'Click to upload image':'Uploads unavailable')+'<input type="file" accept="image/*" data-pgup="mission.images"></label><div class="thumbs">'+(P.mission.images||[]).map(function(im,n){return '<div class="ad-t"><img src="'+imgSrc(im)+'" alt=""><button data-pgrm="mission.images:'+n+'">×</button></div>'}).join('')+'</div></div></div></div>';
+  html+='<div class="editor" data-pg="support"><div class="col"><b>Support ACADI block</b>'+lg3(function(l){return fld('Headline ('+l+')','h_'+l,P.support['h_'+l])+fld('Paragraph ('+l+')','p_'+l,P.support['p_'+l],'area')+fld('Small reassurance line ('+l+')','q_'+l,P.support['q_'+l])})+'</div><div class="col"><div class="notice">Donation links live under Settings & donations.</div></div></div>';
+  return html+'</form>' }
+function readPagesForm(){ var f=$('#ef'); if(!f) return; var P=S.settings.pages; $$('[data-pg]',f).forEach(function(box){ var key=box.dataset.pg; var target = /^pillar(\d)$/.test(key)?P.welcome.pillars[+key.slice(6)]:P[key]; var o={}; $$('input[name],textarea[name],select[name]',box).forEach(function(el){ o[el.name]=el.value }); $$('.rte .ed[data-name]',box).forEach(function(ed){ var h=ed.innerHTML.trim(); o[ed.dataset.name]=(h==='<br>'||h==='<p><br></p>')?'':h }); Object.keys(o).forEach(function(k){ var kk=k.indexOf('.')>-1?k.split('.')[1]:k; target[kk]=o[k] }); var kid=$('[data-pick="aboutkid"] img.on',box); if(kid) target.kid=kid.dataset.kid }) }
+
+function inbox(k,fields){ var l=S[k].slice().sort(function(a,b){return (b.at||0)-(a.at||0)}); return '<div class="toolbar"><h2>'+(k==='applications'?'Collaboration requests':'Topic suggestions')+'</h2></div><div class="table"><div class="trow" style="grid-template-columns:1fr"><span>'+l.length+' total</span></div>'+(l.length?l.map(function(x){return '<div class="trow" style="grid-template-columns:1fr auto"><div>'+fields.map(function(f){return x[f]?'<div><b style="font-size:11px;text-transform:uppercase;color:var(--muted)">'+f+'</b> '+esc(x[f])+'</div>':''}).join('')+'<div style="font-size:12px;color:var(--muted)">'+(x.at?new Date(x.at).toLocaleString():'')+' · '+esc(x.lang||'')+'</div></div><div class="ops">'+(k==='applications'?'<button class="ibtn" data-act="approve" data-id="'+esc(x.id)+'">Add as collaborator</button>':'')+'<button class="ibtn red" data-act="del-inbox" data-k="'+k+'" data-id="'+esc(x.id)+'">Delete</button></div></div>'}).join(''):'<div class="trow" style="grid-template-columns:1fr;color:var(--muted)">Empty.</div>')+'</div>' }
+
+async function saveDoc(coll,id,data){ if(!db) { toast('No database connection'); return false } try{ var copy=Object.assign({},data); delete copy.id; await db.collection(coll).doc(id).set(copy); return true }catch(e){ console.error(e); toast('Save failed: '+(e.message||e)); return false } }
+async function delDoc(coll,id){ if(!db) return false; try{ await db.collection(coll).doc(id).delete(); return true }catch(e){ toast('Delete failed'); return false } }
+function readForm(){ var f=$('#ef'); var o={}; $$('input[name],textarea[name],select[name]',f).forEach(function(el){ o[el.name]=el.value }); $$('.rte .ed[data-name]',f).forEach(function(ed){ var h=ed.innerHTML.trim(); o[ed.dataset.name]=(h==='<br>'||h==='<p></p>'||h==='<p><br></p>')?'':h }); return o }
+function bindAdmin(){
+  var root=$('.admin'); if(!root) return;
+  root.addEventListener('click',async function(e){
+    var b=e.target.closest('button,img[data-kid]'); if(!b) return;
+    if(b.dataset.tab){ A.tab=b.dataset.tab; A.edit=null; render(); return }
+    var act=b.dataset.act, k=A.tab;
+    if(act==='new'){ A.edit='__new__'; A.draft={id:'',published:true,order:(S[k].length+1),images:[],files:[],links:[],color:'lavender',cat:Object.keys(CATS)[0],kid:'s6_3'}; A.editLang='en'; rerenderMain(); return }
+    if(act==='edit'){ var x=S[k].filter(function(y){return y.id===b.dataset.id})[0]; A.edit=x.id; A.draft=JSON.parse(JSON.stringify(x)); A.draft.images=A.draft.images||[]; A.draft.files=A.draft.files||[]; A.draft.links=A.draft.links||[]; A.editLang='en'; rerenderMain(); return }
+    if(act==='cancel'){ A.edit=null; A.draft=null; rerenderMain(); return }
+    if(act==='toggle'){ var y=S[k].filter(function(z){return z.id===b.dataset.id})[0]; y.published=!(y.published!==false); if(await saveDoc(k,y.id,y)) toast('Saved'); rerenderMain(); return }
+    if(act==='del'){ if(!confirm('Delete "'+b.dataset.id+'" permanently?')) return; if(await delDoc(k,b.dataset.id)){ S[k]=S[k].filter(function(z){return z.id!==b.dataset.id}); toast('Deleted') } rerenderMain(); return }
+    if(act==='del-inbox'){ var kk=b.dataset.k; var it=S[kk].filter(function(z){return z.id===b.dataset.id})[0]; if(!it) return; try{ var ref=db.collection(kk).doc(it._doc); var cur=await ref.get(); var items=(cur.data()||{}).items||[]; items.splice(it._n,1); if(items.length) await ref.set({items:items,at:Date.now()}); else await ref.delete(); S[kk]=S[kk].filter(function(z){return z.id!==b.dataset.id}); toast('Deleted') }catch(err){ toast('Delete failed') } rerenderMain(); return }
+    if(act==='approve'){ var ap=S.applications.filter(function(z){return z.id===b.dataset.id})[0]; var cid='c-'+(ap.name||'x').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); var cdoc={id:cid,published:false,order:S.collaborators.length+1,name:ap.name,role:ap.role,org:ap.org,city:ap.city,email:ap.email,summary_en:ap.about||'',images:[],files:[],links:[]}; if(await saveDoc('collaborators',cid,cdoc)){ S.collaborators.push(cdoc); toast('Added as draft collaborator — publish it from Collaborators') } rerenderMain(); return }
+    if(act==='save'){ syncDraft(); var d=A.draft; d.id=(d.id||d.title_en||'item').toLowerCase().replace(/[^a-z0-9؀-ۿ]+/g,'-').replace(/(^-|-$)/g,''); if(!d.id){ toast('ID required'); return } d.published=String(d.published)!=='false'; d.order=+d.order||99; d.links=(d.links||[]).filter(function(l){return l.u}); var oldId=A.edit; if(await saveDoc(k,d.id,d)){ if(oldId&&oldId!=='__new__'&&oldId!==d.id) await delDoc(k,oldId); S[k]=S[k].filter(function(z){return z.id!==d.id&&z.id!==oldId}); S[k].push(d); toast('Saved ✓'); A.edit=null; A.draft=null; rerenderMain() } return }
+    if(act==='save-settings'){ if(A.tab==='pages') readPagesForm(); else readSettingsForm(); if(!db){toast('No database');return} try{ await db.doc('content/settings').set(S.settings); toast('Saved ✓') }catch(err){ toast('Save failed') } return }
+    if(act==='slide-add'){ readSettingsForm(); S.settings.slides.push({word_en:'NEW',word_ar:'جديد',word_fr:'NOUVEAU',bg:'#E6DDF7',main:'s1_1',l:'s1_3',r:'s1_4',tab_en:'New'}); rerenderMain(); return }
+    if(act==='slide-del'){ readSettingsForm(); S.settings.slides.splice(+b.dataset.i,1); rerenderMain(); return }
+    if(b.dataset.ltTab){ syncDraft(); A.editLang=b.dataset.ltTab; rerenderMain(); return }
+    if(b.dataset.pgrm){ readPagesForm(); var P=S.settings.pages; var q=b.dataset.pgrm.split(':'); var parts=q[0].split('.'); if(parts[0].indexOf('pillar')===0) P.welcome.pillars[+parts[0].slice(6)].icon=''; else if(q.length>1) P[parts[0]][parts[1]].splice(+q[1],1); else P[parts[0]][parts[1]]=''; rerenderMain(); return }
+    if(b.dataset.rm){ syncDraft(); A.draft[b.dataset.rm]=''; rerenderMain(); return }
+    if(b.dataset.rmi){ syncDraft(); var p=b.dataset.rmi.split(':'); A.draft[p[0]].splice(+p[1],1); rerenderMain(); return }
+    if(b.dataset.rml!=null){ syncDraft(); A.draft.links.splice(+b.dataset.rml,1); rerenderMain(); return }
+    if(b.dataset.kid!=null){ var wrap=b.closest('[data-pick],[data-kids]'); $$('img',wrap).forEach(function(i){i.classList.toggle('on',i===b)}); if(wrap.dataset.kids!=null){ syncDraft(); A.draft.kid=b.dataset.kid } return }
+  });
+  root.addEventListener('input',function(e){ if(!A.draft||A.tab!=='products') return; var m=$('[data-margin]',root); if(!m) return; var o=readForm(); m.innerHTML=marginText(o) });
+  root.addEventListener('change',async function(e){
+    var inp=e.target; if(inp.dataset.pgup){ if(!assets){ toast('Uploads unavailable'); return } readPagesForm(); var files=[].slice.call(inp.files||[]); if(!files.length) return; toast('Uploading…'); var P=S.settings.pages; var parts=inp.dataset.pgup.split('.'); for(var f of files){ try{ var r=await assets.upload(f); if(parts[0].indexOf('pillar')===0){ P.welcome.pillars[+parts[0].slice(6)].icon=r.id } else if(parts[1]==='images'){ P[parts[0]].images=P[parts[0]].images||[]; if(parts[0]==='mission') P[parts[0]].images=[r.id]; else P[parts[0]].images.push(r.id) } else { P[parts[0]][parts[1]]=r.id } }catch(err){ toast('Upload failed') } } toast('Uploaded — click Save all'); rerenderMain(); return }
+    if(!inp.dataset.up) return; if(!assets){ toast('Uploads unavailable'); return } syncDraft(); var files=[].slice.call(inp.files||[]); if(!files.length) return; toast('Uploading…');
+    for(var f of files){ try{ var r=await assets.upload(f); if(inp.dataset.up==='videoAsset') A.draft.videoAsset=r.id; else if(inp.dataset.up==='files') A.draft.files.push({id:r.id,name:f.name}); else A.draft.images.push(r.id) }catch(err){ toast('Upload failed: '+(err.message||err)) } }
+    toast('Uploaded ✓'); rerenderMain();
+  });
+}
+function syncDraft(){ var f=$('#ef'); if(!f||!A.draft) return; var o=readForm(); Object.keys(o).forEach(function(k){ A.draft[k]=o[k] }); var links=[]; $$('[data-links] .lk',f).forEach(function(row){ var t=$('[data-lt]',row).value, u=$('[data-lu]',row).value; if(t||u) links.push({t:t,u:u}) }); A.draft.links=links; var kid=$('[data-kids] img.on',f); if(kid) A.draft.kid=kid.dataset.kid }
+function readSettingsForm(){ var f=$('#ef'); if(!f) return; if(A.tab==='hero'){ $$('[data-slide]',f).forEach(function(box,i){ var s=S.settings.slides[i]; $$('input[name],textarea[name]',box).forEach(function(el){ s[el.name]=el.value }); ['main','l','r'].forEach(function(p){ var on=$('[data-pick="'+p+'"] img.on',box); if(on) s[p]=on.dataset.kid }) }) }
+  else if(A.tab==='helps'){ $$('[data-help]',f).forEach(function(box,i){ var h=S.settings.helps[i]; $$('input[name]',box).forEach(function(el){ h[el.name]=el.value }); var on=$('[data-pick] img.on',box); if(on) h.kid=on.dataset.kid }) }
+  else { var o=readForm(); Object.keys(o).forEach(function(k){ S.settings[k]=o[k] }) } }
+function rerenderMain(){ var m=$('#amain'); if(m){ m.innerHTML=adminMain(); bindRte(m) } var sideBtns=$$('.ad-side button'); sideBtns.forEach(function(b){ b.classList.toggle('on',b.dataset.tab===A.tab) }) }
+
+/* ---------------- boot ---------------- */
+document.documentElement.lang=lang; document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+render(); initPlatform();
+})();
+</script>
+</body>
+</html>
