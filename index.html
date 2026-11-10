@@ -458,28 +458,28 @@ function toast(m){ var t=$('#toast'); t.textContent=m; t.style.display='block'; 
 
 /* ---------------- Supabase backend (used on helloacadi.com / Netlify) ---------------- */
 var SUPA_URL='https://mtrvcffjfngopllyuwis.supabase.co', SUPA_KEY='sb_publishable_I79I2MBcZ9hKpbkUJT1uSA_fkWFH5C4';
-var sb=null;
+var supa=null;
 function sbDocs(){
   function ref(coll,id){ return {
-    get:async function(){ var r=await sb.from('docs').select('data').eq('coll',coll).eq('id',id).maybeSingle(); if(r.error) throw r.error; return {exists:!!r.data, data:function(){return r.data?r.data.data:null}} },
-    set:async function(data){ var r=await sb.from('docs').upsert({coll:coll,id:id,data:data,updated_at:new Date().toISOString()}); if(r.error) throw r.error },
-    delete:async function(){ var r=await sb.from('docs').delete().eq('coll',coll).eq('id',id); if(r.error) throw r.error }
+    get:async function(){ var r=await supa.from('docs').select('data').eq('coll',coll).eq('id',id).maybeSingle(); if(r.error) throw r.error; return {exists:!!r.data, data:function(){return r.data?r.data.data:null}} },
+    set:async function(data){ var r=await supa.from('docs').upsert({coll:coll,id:id,data:data,updated_at:new Date().toISOString()}); if(r.error) throw r.error },
+    delete:async function(){ var r=await supa.from('docs').delete().eq('coll',coll).eq('id',id); if(r.error) throw r.error }
   }}
   return {
     doc:function(path){ var p=path.split('/'); return ref(p[0],p[1]) },
     collection:function(coll){ return {
       doc:function(id){ return ref(coll,id) },
-      get:async function(){ var r=await sb.from('docs').select('id,data').eq('coll',coll); if(r.error) throw r.error; return {docs:(r.data||[]).map(function(row){return {id:row.id,data:function(){return row.data}}})} }
+      get:async function(){ var r=await supa.from('docs').select('id,data').eq('coll',coll); if(r.error) throw r.error; return {docs:(r.data||[]).map(function(row){return {id:row.id,data:function(){return row.data}}})} }
     }}
   };
 }
 var sbAssets={ upload:async function(f){
   var name=Date.now()+'-'+Math.random().toString(36).slice(2,7)+'-'+f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
-  var r=await sb.storage.from('media').upload(name,f,{contentType:f.type||undefined,upsert:false}); if(r.error) throw r.error;
-  return {id:sb.storage.from('media').getPublicUrl(name).data.publicUrl} } };
-async function sbCheckAdmin(){ var s=await sb.auth.getSession(); if(!s.data.session) return false; var r=await sb.rpc('is_admin'); return !r.error&&r.data===true }
-async function adminLogin(email,pw){ var r=await sb.auth.signInWithPassword({email:email,password:pw}); if(r.error) throw r.error; isAdmin=await sbCheckAdmin(); if(!isAdmin){ await sb.auth.signOut(); throw new Error('This account is not an ACADI admin') } await initPlatform(true) }
-async function adminLogout(){ if(sb) await sb.auth.signOut(); isAdmin=false; assets=null; S.applications=[]; S.suggestions=[]; renderNav(); location.hash='#home' }
+  var r=await supa.storage.from('media').upload(name,f,{contentType:f.type||undefined,upsert:false}); if(r.error) throw r.error;
+  return {id:supa.storage.from('media').getPublicUrl(name).data.publicUrl} } };
+async function sbCheckAdmin(){ var s=await supa.auth.getSession(); if(!s.data.session) return false; var r=await supa.rpc('is_admin'); return !r.error&&r.data===true }
+async function adminLogin(email,pw){ var r=await supa.auth.signInWithPassword({email:email,password:pw}); if(r.error) throw r.error; isAdmin=await sbCheckAdmin(); if(!isAdmin){ await supa.auth.signOut(); throw new Error('This account is not an ACADI admin') } await initPlatform(true) }
+async function adminLogout(){ if(supa) await supa.auth.signOut(); isAdmin=false; assets=null; S.applications=[]; S.suggestions=[]; renderNav(); location.hash='#home' }
 
 async function initPlatform(force){
   if(location.protocol==='file:'&&/previewadmin/.test(location.search)){ isAdmin=true; renderNav(); if(route().page==='admin') render(); }
@@ -487,7 +487,7 @@ async function initPlatform(force){
   if(!onClaude&&!(window.supabase&&window.supabase.createClient)) return;
   try{
     if(onClaude){ user=await claude.use('user'); isAdmin=!!(user&&user.canEdit&&user.canEdit()); db=await claude.use('db'); }
-    else { if(!sb) sb=window.supabase.createClient(SUPA_URL,SUPA_KEY); db=sbDocs(); isAdmin=await sbCheckAdmin(); }
+    else { if(!supa) supa=window.supabase.createClient(SUPA_URL,SUPA_KEY); db=sbDocs(); isAdmin=await sbCheckAdmin(); }
     if(db){
       live=true;
       var sd=await db.doc('content/settings').get().catch(function(){return null});
@@ -636,7 +636,7 @@ function bindRte(root){
 }
 
 /* inbox writes: one doc per signed-in person (rules: applications/{self}); otherwise fall back to WhatsApp/email */
-async function inboxWrite(coll,doc){ if(sb){ try{ var rid=Date.now()+'-'+Math.random().toString(36).slice(2,8); var ins=await sb.from('docs').insert({coll:coll,id:rid,data:{items:[doc],at:Date.now()}}); if(ins.error) throw ins.error; return true }catch(e){ console.warn('inbox',e); return false } } if(!db||!user||!user.id) return false; try{ var uid=await user.id(); var ref=db.collection(coll).doc(uid); var prev=await ref.get().catch(function(){return null}); var items=(prev&&prev.exists&&prev.data()&&prev.data().items)||[]; items.push(doc); await ref.set({items:items,at:Date.now()}); return true }catch(e){ console.warn('inbox',e); return false } }
+async function inboxWrite(coll,doc){ if(supa){ try{ var rid=Date.now()+'-'+Math.random().toString(36).slice(2,8); var ins=await supa.from('docs').insert({coll:coll,id:rid,data:{items:[doc],at:Date.now()}}); if(ins.error) throw ins.error; return true }catch(e){ console.warn('inbox',e); return false } } if(!db||!user||!user.id) return false; try{ var uid=await user.id(); var ref=db.collection(coll).doc(uid); var prev=await ref.get().catch(function(){return null}); var items=(prev&&prev.exists&&prev.data()&&prev.data().items)||[]; items.push(doc); await ref.set({items:items,at:Date.now()}); return true }catch(e){ console.warn('inbox',e); return false } }
 function fallbackSend(subject,doc){ var s=S.settings; var text=subject+'\n'+Object.keys(doc).filter(function(k){return k!=='at'&&k!=='lang'&&doc[k]}).map(function(k){return k+': '+doc[k]}).join('\n'); var box=$('#ok1')||$('#ok2'); var links=''; if(s.whatsapp) links+=' <a class="btn sm" style="margin-inline-start:8px" href="https://wa.me/'+s.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(text)+'" target="_blank" rel="noopener">WhatsApp</a>'; if(s.email) links+=' <a class="btn light sm" style="margin-inline-start:8px" href="mailto:'+s.email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(text)+'">Email</a>'; if(box&&links) box.innerHTML+='<br><span style="font-weight:600;color:var(--muted);font-size:13px">'+(lang==='ar'?'لإرسالها مباشرة:':lang==='fr'?'Pour l\'envoyer directement :':'To send it directly:')+'</span>'+links }
 
 /* ---------------- render ---------------- */
@@ -717,9 +717,9 @@ document.addEventListener('keydown',function(e){ if(route().page!=='home') retur
 var A={tab:'dashboard',edit:null,editLang:'en',draft:null};
 var COLL={lessons:{label:'Parent Classroom — lessons',fields:['title','summary','why','steps','body','sources'],extra:['cat','ages','duration','color','kid']},printables:{label:'Free Printables',fields:['title','summary','howto'],extra:['cat','ages','color']},articles:{label:'Parent Resources — articles',fields:['title','summary','body'],extra:['cat','source','sourceUrl']},products:{label:'Shop — products',fields:['title','summary','body'],extra:['price','compareAt','discountType','discountValue','cost','currency','stock','sku','cat']},collaborators:{label:'Collaborators',fields:['summary','body'],extra:['name','role','org','city','email']}};
 function pageAdmin(){
-  if(!isAdmin&&sb) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><form id="loginf" class="card" style="max-width:380px;margin:0 auto;padding:28px;display:grid;gap:12px;background:#fff;border-radius:22px"><h3 style="margin:0">Team sign in</h3><input name="email" type="email" autocomplete="username" placeholder="Email" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><input name="pw" type="password" autocomplete="current-password" placeholder="Password" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><button class="btn" type="submit">Sign in</button><div id="loginmsg" style="font-size:13px;color:#a33"></div></form></div></section>'+footer();
+  if(!isAdmin&&supa) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><form id="loginf" class="card" style="max-width:380px;margin:0 auto;padding:28px;display:grid;gap:12px;background:#fff;border-radius:22px"><h3 style="margin:0">Team sign in</h3><input name="email" type="email" autocomplete="username" placeholder="Email" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><input name="pw" type="password" autocomplete="current-password" placeholder="Password" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><button class="btn" type="submit">Sign in</button><div id="loginmsg" style="font-size:13px;color:#a33"></div></form></div></section>'+footer();
   if(!isAdmin) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><div class="empty">'+(live?'This area is for the ACADI team (artifact editors) only.':T('signin'))+'</div></div></section>'+footer();
-  var side='<aside class="ad-side">'+(sb?'<button id="adlogout" type="button" style="font-size:12px;opacity:.7;margin-bottom:8px;color:inherit">Sign out</button>':'')+'<h4>Overview</h4>'+sb('dashboard','Dashboard')+'<h4>Content</h4>'+Object.keys(COLL).map(function(k){return sb(k,COLL[k].label,S[k].length)}).join('')+'<h4>Site</h4>'+sb('hero','Home carousel')+sb('helps','How ACADI helps')+sb('pages','Pages & texts')+sb('settings','Settings & donations')+'<h4>Inbox</h4>'+sb('applications','Collaboration requests',S.applications.length)+sb('suggestions','Topic suggestions',S.suggestions.length)+'</aside>';
+  var side='<aside class="ad-side">'+(supa?'<button id="adlogout" type="button" style="font-size:12px;opacity:.7;margin-bottom:8px;color:inherit">Sign out</button>':'')+'<h4>Overview</h4>'+sb('dashboard','Dashboard')+'<h4>Content</h4>'+Object.keys(COLL).map(function(k){return sb(k,COLL[k].label,S[k].length)}).join('')+'<h4>Site</h4>'+sb('hero','Home carousel')+sb('helps','How ACADI helps')+sb('pages','Pages & texts')+sb('settings','Settings & donations')+'<h4>Inbox</h4>'+sb('applications','Collaboration requests',S.applications.length)+sb('suggestions','Topic suggestions',S.suggestions.length)+'</aside>';
   return '<div class="admin">'+side+'<div class="amain" id="amain">'+adminMain()+'</div></div>';
 }
 function sb(k,l,c){ return '<button data-tab="'+k+'" class="'+(A.tab===k?'on':'')+'">'+l+(c!=null?'<span class="cnt">'+c+'</span>':'')+'</button>' }
