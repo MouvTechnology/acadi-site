@@ -341,6 +341,7 @@ footer .adminlink{opacity:.5;font-size:12px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 (function(){
 'use strict';
@@ -454,12 +455,39 @@ function imgSrc(x){ if(!x) return ''; if(/^s\d_\d$/.test(x)) return ''+x+'.webp'
 function published(list){ return list.filter(function(x){return x.published!==false}).sort(function(a,b){return (a.order||99)-(b.order||99)}) }
 function toast(m){ var t=$('#toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none'},2600) }
 
-async function initPlatform(){
+
+/* ---------------- Supabase backend (used on helloacadi.com / Netlify) ---------------- */
+var SUPA_URL='https://mtrvcffjfngopllyuwis.supabase.co', SUPA_KEY='sb_publishable_I79I2MBcZ9hKpbkUJT1uSA_fkWFH5C4';
+var sb=null;
+function sbDocs(){
+  function ref(coll,id){ return {
+    get:async function(){ var r=await sb.from('docs').select('data').eq('coll',coll).eq('id',id).maybeSingle(); if(r.error) throw r.error; return {exists:!!r.data, data:function(){return r.data?r.data.data:null}} },
+    set:async function(data){ var r=await sb.from('docs').upsert({coll:coll,id:id,data:data,updated_at:new Date().toISOString()}); if(r.error) throw r.error },
+    delete:async function(){ var r=await sb.from('docs').delete().eq('coll',coll).eq('id',id); if(r.error) throw r.error }
+  }}
+  return {
+    doc:function(path){ var p=path.split('/'); return ref(p[0],p[1]) },
+    collection:function(coll){ return {
+      doc:function(id){ return ref(coll,id) },
+      get:async function(){ var r=await sb.from('docs').select('id,data').eq('coll',coll); if(r.error) throw r.error; return {docs:(r.data||[]).map(function(row){return {id:row.id,data:function(){return row.data}}})} }
+    }}
+  };
+}
+var sbAssets={ upload:async function(f){
+  var name=Date.now()+'-'+Math.random().toString(36).slice(2,7)+'-'+f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
+  var r=await sb.storage.from('media').upload(name,f,{contentType:f.type||undefined,upsert:false}); if(r.error) throw r.error;
+  return {id:sb.storage.from('media').getPublicUrl(name).data.publicUrl} } };
+async function sbCheckAdmin(){ var s=await sb.auth.getSession(); if(!s.data.session) return false; var r=await sb.rpc('is_admin'); return !r.error&&r.data===true }
+async function adminLogin(email,pw){ var r=await sb.auth.signInWithPassword({email:email,password:pw}); if(r.error) throw r.error; isAdmin=await sbCheckAdmin(); if(!isAdmin){ await sb.auth.signOut(); throw new Error('This account is not an ACADI admin') } await initPlatform(true) }
+async function adminLogout(){ if(sb) await sb.auth.signOut(); isAdmin=false; assets=null; S.applications=[]; S.suggestions=[]; renderNav(); location.hash='#home' }
+
+async function initPlatform(force){
   if(location.protocol==='file:'&&/previewadmin/.test(location.search)){ isAdmin=true; renderNav(); if(route().page==='admin') render(); }
-  if(!window.claude||!claude.use) return;
+  var onClaude=!!(window.claude&&claude.use);
+  if(!onClaude&&!(window.supabase&&window.supabase.createClient)) return;
   try{
-    user=await claude.use('user'); isAdmin=!!(user&&user.canEdit&&user.canEdit());
-    db=await claude.use('db');
+    if(onClaude){ user=await claude.use('user'); isAdmin=!!(user&&user.canEdit&&user.canEdit()); db=await claude.use('db'); }
+    else { if(!sb) sb=window.supabase.createClient(SUPA_URL,SUPA_KEY); db=sbDocs(); isAdmin=await sbCheckAdmin(); }
     if(db){
       live=true;
       var sd=await db.doc('content/settings').get().catch(function(){return null});
@@ -471,7 +499,7 @@ async function initPlatform(){
       }
       if(isAdmin){
         for(var k2 of ['applications','suggestions']){ var sn=await db.collection(k2).get().catch(function(){return null}); if(sn&&sn.docs){ var out=[]; sn.docs.forEach(function(d){ var dd=d.data()||{}; (dd.items||[dd]).forEach(function(it,n){ out.push(Object.assign({id:d.id+':'+n,_doc:d.id,_n:n},it)) }) }); S[k2]=out } }
-        assets=await claude.use('assets');
+        assets=onClaude?await claude.use('assets'):sbAssets;
       }
       render();
     }
@@ -608,7 +636,7 @@ function bindRte(root){
 }
 
 /* inbox writes: one doc per signed-in person (rules: applications/{self}); otherwise fall back to WhatsApp/email */
-async function inboxWrite(coll,doc){ if(!db||!user||!user.id) return false; try{ var uid=await user.id(); var ref=db.collection(coll).doc(uid); var prev=await ref.get().catch(function(){return null}); var items=(prev&&prev.exists&&prev.data()&&prev.data().items)||[]; items.push(doc); await ref.set({items:items,at:Date.now()}); return true }catch(e){ console.warn('inbox',e); return false } }
+async function inboxWrite(coll,doc){ if(sb){ try{ var rid=Date.now()+'-'+Math.random().toString(36).slice(2,8); var ins=await sb.from('docs').insert({coll:coll,id:rid,data:{items:[doc],at:Date.now()}}); if(ins.error) throw ins.error; return true }catch(e){ console.warn('inbox',e); return false } } if(!db||!user||!user.id) return false; try{ var uid=await user.id(); var ref=db.collection(coll).doc(uid); var prev=await ref.get().catch(function(){return null}); var items=(prev&&prev.exists&&prev.data()&&prev.data().items)||[]; items.push(doc); await ref.set({items:items,at:Date.now()}); return true }catch(e){ console.warn('inbox',e); return false } }
 function fallbackSend(subject,doc){ var s=S.settings; var text=subject+'\n'+Object.keys(doc).filter(function(k){return k!=='at'&&k!=='lang'&&doc[k]}).map(function(k){return k+': '+doc[k]}).join('\n'); var box=$('#ok1')||$('#ok2'); var links=''; if(s.whatsapp) links+=' <a class="btn sm" style="margin-inline-start:8px" href="https://wa.me/'+s.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(text)+'" target="_blank" rel="noopener">WhatsApp</a>'; if(s.email) links+=' <a class="btn light sm" style="margin-inline-start:8px" href="mailto:'+s.email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(text)+'">Email</a>'; if(box&&links) box.innerHTML+='<br><span style="font-weight:600;color:var(--muted);font-size:13px">'+(lang==='ar'?'لإرسالها مباشرة:':lang==='fr'?'Pour l\'envoyer directement :':'To send it directly:')+'</span>'+links }
 
 /* ---------------- render ---------------- */
@@ -618,7 +646,7 @@ function render(){
   var html = r.page==='home'?pageHome(): r.page==='classroom'?pageClassroom(): r.page==='lesson'?pageLesson(r.id): r.page==='printables'?pagePrintables(): r.page==='resources'?pageResources(): r.page==='article'?pageArticle(r.id): r.page==='about'?pageAbout(): r.page==='support'?pageSupport(): r.page==='shop'?pageShop(): r.page==='product'?pageProduct(r.id): r.page==='collaborate'?pageCollaborate(): r.page==='admin'?pageAdmin(): pageHome();
   m.innerHTML=html;
   if(r.page==='home') initHero();
-  if(r.page==='admin'){ bindAdmin(); bindRte($('#amain')) }
+  if(r.page==='admin'){ var lf=$('#loginf'); if(lf){ lf.addEventListener('submit',async function(e){ e.preventDefault(); var m=$('#loginmsg'); m.textContent='Signing in…'; try{ await adminLogin(lf.email.value.trim(),lf.pw.value); toast('Welcome back') }catch(err){ m.textContent=err.message||'Sign in failed' } }) } else { bindAdmin(); bindRte($('#amain')); var lo=$('#adlogout'); if(lo) lo.addEventListener('click',adminLogout) } }
   $$('#pthumbs img').forEach(function(t){ t.addEventListener('click',function(){ $('#pmain').src=t.dataset.big }) });
   $$('.topics button[data-cat]').forEach(function(b){ b.addEventListener('click',function(){ filterCat=b.dataset.cat; render() }) });
   var sg=$('#suggest'); if(sg) sg.addEventListener('submit',async function(e){ e.preventDefault(); var fd=new FormData(sg); var doc={text:fd.get('text'),email:fd.get('email')||'',lang:lang,at:Date.now()}; var saved=await inboxWrite('suggestions',doc); sg.style.display='none'; $('#ok1').style.display='block'; if(!saved) fallbackSend('ACADI topic suggestion', doc) });
@@ -689,8 +717,9 @@ document.addEventListener('keydown',function(e){ if(route().page!=='home') retur
 var A={tab:'dashboard',edit:null,editLang:'en',draft:null};
 var COLL={lessons:{label:'Parent Classroom — lessons',fields:['title','summary','why','steps','body','sources'],extra:['cat','ages','duration','color','kid']},printables:{label:'Free Printables',fields:['title','summary','howto'],extra:['cat','ages','color']},articles:{label:'Parent Resources — articles',fields:['title','summary','body'],extra:['cat','source','sourceUrl']},products:{label:'Shop — products',fields:['title','summary','body'],extra:['price','compareAt','discountType','discountValue','cost','currency','stock','sku','cat']},collaborators:{label:'Collaborators',fields:['summary','body'],extra:['name','role','org','city','email']}};
 function pageAdmin(){
+  if(!isAdmin&&sb) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><form id="loginf" class="card" style="max-width:380px;margin:0 auto;padding:28px;display:grid;gap:12px;background:#fff;border-radius:22px"><h3 style="margin:0">Team sign in</h3><input name="email" type="email" autocomplete="username" placeholder="Email" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><input name="pw" type="password" autocomplete="current-password" placeholder="Password" required style="padding:12px;border-radius:12px;border:1px solid #ddd;font:inherit"><button class="btn" type="submit">Sign in</button><div id="loginmsg" style="font-size:13px;color:#a33"></div></form></div></section>'+footer();
   if(!isAdmin) return banner('Admin','Admin','', 'lavender','ADMIN')+'<section><div class="wrap"><div class="empty">'+(live?'This area is for the ACADI team (artifact editors) only.':T('signin'))+'</div></div></section>'+footer();
-  var side='<aside class="ad-side"><h4>Overview</h4>'+sb('dashboard','Dashboard')+'<h4>Content</h4>'+Object.keys(COLL).map(function(k){return sb(k,COLL[k].label,S[k].length)}).join('')+'<h4>Site</h4>'+sb('hero','Home carousel')+sb('helps','How ACADI helps')+sb('pages','Pages & texts')+sb('settings','Settings & donations')+'<h4>Inbox</h4>'+sb('applications','Collaboration requests',S.applications.length)+sb('suggestions','Topic suggestions',S.suggestions.length)+'</aside>';
+  var side='<aside class="ad-side">'+(sb?'<button id="adlogout" type="button" style="font-size:12px;opacity:.7;margin-bottom:8px;color:inherit">Sign out</button>':'')+'<h4>Overview</h4>'+sb('dashboard','Dashboard')+'<h4>Content</h4>'+Object.keys(COLL).map(function(k){return sb(k,COLL[k].label,S[k].length)}).join('')+'<h4>Site</h4>'+sb('hero','Home carousel')+sb('helps','How ACADI helps')+sb('pages','Pages & texts')+sb('settings','Settings & donations')+'<h4>Inbox</h4>'+sb('applications','Collaboration requests',S.applications.length)+sb('suggestions','Topic suggestions',S.suggestions.length)+'</aside>';
   return '<div class="admin">'+side+'<div class="amain" id="amain">'+adminMain()+'</div></div>';
 }
 function sb(k,l,c){ return '<button data-tab="'+k+'" class="'+(A.tab===k?'on':'')+'">'+l+(c!=null?'<span class="cnt">'+c+'</span>':'')+'</button>' }
